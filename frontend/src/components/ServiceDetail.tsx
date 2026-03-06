@@ -192,7 +192,14 @@ const ServiceDetail: React.FC = () => {
 
         {/* Right: doctors + book */}
         <div className="flex flex-col gap-6">
-          {isPatient && (
+          {!user ? (
+            <button
+              onClick={() => navigate('/login')}
+              className="w-full bg-indigo-600 text-white py-5 rounded-2xl font-black text-lg shadow-xl shadow-indigo-100 hover:-translate-y-1 active:scale-95 transition-all"
+            >
+              Sign In to Book
+            </button>
+          ) : isPatient && (
             <button
               onClick={() => setIsBooking(true)}
               className="w-full bg-indigo-600 text-white py-5 rounded-2xl font-black text-lg shadow-xl shadow-indigo-100 hover:-translate-y-1 active:scale-95 transition-all"

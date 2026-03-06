@@ -4,13 +4,14 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Role } from '../types';
 
 interface SidebarProps {
-  role: Role;
-  onLogout: () => void;
+  role?: Role;
+  onLogout?: () => void;
   isOpen: boolean;
   onClose: () => void;
+  guest?: boolean;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ role, onLogout, isOpen, onClose }) => {
+const Sidebar: React.FC<SidebarProps> = ({ role, onLogout, isOpen, onClose, guest = false }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -64,47 +65,68 @@ const Sidebar: React.FC<SidebarProps> = ({ role, onLogout, isOpen, onClose }) =>
 
         <nav className="flex-1 px-6 space-y-2">
           <div className="pb-4">
-            <NavItem icon="fa-th-large" label="Overview" viewId="dashboard" active={path === '/dashboard'} />
-            <NavItem icon="fa-calendar-alt" label="Appointments" viewId="appointments" active={path === '/appointments'} />
-
-            {role === Role.ADMIN && (
+            {guest ? (
               <>
-                <NavItem icon="fa-chart-pie" label="Operations" viewId="operations" active={path === '/operations'} />
-                <NavItem icon="fa-briefcase-medical" label="Clinic Services" viewId="services" active={path === '/services'} />
-                <NavItem icon="fa-users" label="Patient Records" viewId="patients" active={path === '/patients'} />
+                <NavItem icon="fa-briefcase-medical" label="Browse Services" viewId="services" active={path.startsWith('/services')} />
+                <NavItem icon="fa-info-circle" label="About Us" viewId="about" active={path === '/about'} />
+              </>
+            ) : (
+              <>
+                <NavItem icon="fa-th-large" label="Overview" viewId="dashboard" active={path === '/dashboard'} />
+                <NavItem icon="fa-calendar-alt" label="Appointments" viewId="appointments" active={path === '/appointments'} />
+
+                {role === Role.ADMIN && (
+                  <>
+                    <NavItem icon="fa-chart-pie" label="Operations" viewId="operations" active={path === '/operations'} />
+                    <NavItem icon="fa-briefcase-medical" label="Clinic Services" viewId="services" active={path.startsWith('/services')} />
+                    <NavItem icon="fa-users" label="Patient Records" viewId="patients" active={path === '/patients'} />
+                  </>
+                )}
+
+                {role === Role.PATIENT && (
+                  <>
+                    <NavItem icon="fa-briefcase-medical" label="Browse Services" viewId="services" active={path.startsWith('/services')} />
+                    <NavItem icon="fa-file-medical" label="Medical History" viewId="medical-records" active={path === '/medical-records'} />
+                  </>
+                )}
+
+                {role === Role.DOCTOR && (
+                  <>
+                    <NavItem icon="fa-user-injured" label="My Patients" viewId="patients" active={path === '/patients'} />
+                    <NavItem icon="fa-file-medical-alt" label="Clinical Records" viewId="medical-records" active={path === '/medical-records'} />
+                  </>
+                )}
+
+                <NavItem icon="fa-info-circle" label="About Us" viewId="about" active={path === '/about'} />
               </>
             )}
-
-            {role === Role.PATIENT && (
-              <>
-                <NavItem icon="fa-briefcase-medical" label="Browse Services" viewId="services" active={path === '/services'} />
-                <NavItem icon="fa-file-medical" label="Medical History" viewId="medical-records" active={path === '/medical-records'} />
-              </>
-            )}
-
-            {role === Role.DOCTOR && (
-              <>
-                <NavItem icon="fa-user-injured" label="My Patients" viewId="patients" active={path === '/patients'} />
-                <NavItem icon="fa-file-medical-alt" label="Clinical Records" viewId="medical-records" active={path === '/medical-records'} />
-              </>
-            )}
-
-            <NavItem icon="fa-info-circle" label="About Us" viewId="about" active={path === '/about'} />
           </div>
 
-          <div className="pt-4 border-t border-slate-100">
-            <NavItem icon="fa-user-cog" label="Account Settings" viewId="settings" active={path === '/settings'} />
-          </div>
+          {!guest && (
+            <div className="pt-4 border-t border-slate-100">
+              <NavItem icon="fa-user-cog" label="Account Settings" viewId="settings" active={path === '/settings'} />
+            </div>
+          )}
         </nav>
 
         <div className="p-6">
-          <button
-            onClick={onLogout}
-            className="flex items-center gap-3 w-full px-4 py-4 text-slate-500 hover:bg-rose-50 hover:text-rose-600 rounded-2xl transition-all font-bold border border-transparent hover:border-rose-100"
-          >
-            <i className="fas fa-power-off w-5"></i>
-            Sign Out
-          </button>
+          {guest ? (
+            <button
+              onClick={() => navigate('/login')}
+              className="flex items-center justify-center gap-2 w-full px-4 py-4 bg-indigo-600 text-white rounded-2xl font-bold shadow-lg shadow-indigo-100 hover:-translate-y-0.5 transition-all"
+            >
+              <i className="fas fa-sign-in-alt w-5"></i>
+              Sign In
+            </button>
+          ) : (
+            <button
+              onClick={onLogout}
+              className="flex items-center gap-3 w-full px-4 py-4 text-slate-500 hover:bg-rose-50 hover:text-rose-600 rounded-2xl transition-all font-bold border border-transparent hover:border-rose-100"
+            >
+              <i className="fas fa-power-off w-5"></i>
+              Sign Out
+            </button>
+          )}
         </div>
       </aside>
     </>

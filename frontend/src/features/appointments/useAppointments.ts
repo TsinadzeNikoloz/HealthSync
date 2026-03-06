@@ -37,28 +37,33 @@ export function useAppointments() {
     error,
   } = useQuery({
     queryKey: isPatient
-      ? ["my-appointments"]
+      ? ["my-appointments", filter, sortBy, page]
       : ["appointments", filter, sortBy, page, search],
     queryFn: isPatient
-      ? getMyAppointments
+      ? () => getMyAppointments({ filter, sortBy, page })
       : () => getAppointments({ filter, sortBy, page, search }),
   });
 
   const pageCount = Math.ceil(count / PAGE_SIZE);
 
-  // Only prefetch for staff (patients get all their appointments at once)
-  if (!isPatient && page < pageCount)
+  if (page < pageCount)
     queryClient.prefetchQuery({
-      queryKey: ["appointments", filter, sortBy, page + 1, search],
-      queryFn: () =>
-        getAppointments({ filter, sortBy, page: page + 1, search }),
+      queryKey: isPatient
+        ? ["my-appointments", filter, sortBy, page + 1]
+        : ["appointments", filter, sortBy, page + 1, search],
+      queryFn: isPatient
+        ? () => getMyAppointments({ filter, sortBy, page: page + 1 })
+        : () => getAppointments({ filter, sortBy, page: page + 1, search }),
     });
 
-  if (!isPatient && page > 1)
+  if (page > 1)
     queryClient.prefetchQuery({
-      queryKey: ["appointments", filter, sortBy, page - 1, search],
-      queryFn: () =>
-        getAppointments({ filter, sortBy, page: page - 1, search }),
+      queryKey: isPatient
+        ? ["my-appointments", filter, sortBy, page - 1]
+        : ["appointments", filter, sortBy, page - 1, search],
+      queryFn: isPatient
+        ? () => getMyAppointments({ filter, sortBy, page: page - 1 })
+        : () => getAppointments({ filter, sortBy, page: page - 1, search }),
     });
 
   return { appointments, count, isPending, error };

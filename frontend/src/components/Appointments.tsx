@@ -46,7 +46,7 @@ const Appointments: React.FC = () => {
 	};
 
 	const handleMarkComplete = (id: string) => {
-		const apt = appointments.find((a) => a.id === id);
+		const apt = appointments.find((a: Appointment) => a.id === id);
 		if (!apt) return;
 		setCompletingApt(apt);
 		setDiagnosis('');
@@ -79,13 +79,14 @@ const Appointments: React.FC = () => {
 
 	const stats = {
 		total: count,
-		pending: appointments.filter((a) => a.status === AppointmentStatus.PENDING)
-			.length,
+		pending: appointments.filter(
+			(a: Appointment) => a.status === AppointmentStatus.PENDING,
+		).length,
 		confirmed: appointments.filter(
-			(a) => a.status === AppointmentStatus.CONFIRMED,
+			(a: Appointment) => a.status === AppointmentStatus.CONFIRMED,
 		).length,
 		completed: appointments.filter(
-			(a) => a.status === AppointmentStatus.COMPLETED,
+			(a: Appointment) => a.status === AppointmentStatus.COMPLETED,
 		).length,
 	};
 
@@ -170,7 +171,7 @@ const Appointments: React.FC = () => {
 						</h3>
 					</div>
 				) : (
-					appointments.map((apt) => (
+					appointments.map((apt: Appointment) => (
 						<AppointmentItem
 							key={apt.id}
 							appointment={apt}

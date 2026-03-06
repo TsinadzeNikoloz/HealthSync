@@ -1,11 +1,23 @@
 import express from 'express';
+import rateLimit from 'express-rate-limit';
 import * as userController from '../controllers/user.controller.js';
 import * as authController from '../controllers/auth.controller.js';
 
 const router = express.Router();
 
+const loginLimiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	max: 5,
+	message: {
+		status: 'fail',
+		message: 'Too many login attempts. Please try again in 15 minutes.',
+	},
+	standardHeaders: true,
+	legacyHeaders: false,
+});
+
 router.post('/signup', authController.signup);
-router.post('/login', authController.login);
+router.post('/login', loginLimiter, authController.login);
 router.get('/logout', authController.logout);
 router.post('/verifyOTP', authController.verifyOTP);
 router.post('/forgotPassword', authController.forgotPassword);

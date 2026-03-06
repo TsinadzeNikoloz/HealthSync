@@ -9,7 +9,7 @@ import { useMarkRead } from '../features/notifications/useMarkRead';
 import { useOutsideClick } from '../hooks/useOutsideClick';
 
 interface HeaderProps {
-  user: User;
+  user: User | null;
   onMenuToggle: () => void;
 }
 
@@ -115,10 +115,10 @@ const NotificationBell: React.FC = () => {
 };
 
 const Header: React.FC<HeaderProps> = ({ user, onMenuToggle }) => {
+  const navigate = useNavigate();
   return (
     <header className="px-6 md:px-10 py-6 flex items-center justify-between sticky top-0 z-30 glass border-b border-white/20">
       <div className="flex items-center gap-4">
-        {/* Hamburger — mobile only */}
         <button
           onClick={onMenuToggle}
           className="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-all"
@@ -129,29 +129,47 @@ const Header: React.FC<HeaderProps> = ({ user, onMenuToggle }) => {
 
         <div className="flex flex-col">
           <h1 className="text-sm font-bold text-slate-400 uppercase tracking-[0.2em]">
-            {user.role === 'ADMIN' ? 'Administrator' : user.role === 'DOCTOR' ? 'Physician Control' : 'Personal Health'}
+            {user ? (user.role === 'ADMIN' ? 'Administrator' : user.role === 'DOCTOR' ? 'Physician Control' : 'Personal Health') : 'Welcome'}
           </h1>
           <p className="text-xl font-black text-slate-800">Dashboard</p>
         </div>
       </div>
 
       <div className="flex items-center gap-4">
-        <NotificationBell />
-
-        <div className="flex items-center gap-4 group cursor-pointer">
-          <div className="text-right hidden sm:block">
-            <p className="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">{user.name}</p>
-            <p className={`text-[10px] font-extrabold uppercase tracking-widest ${user.role === 'ADMIN' ? 'text-rose-500' : user.role === 'DOCTOR' ? 'text-emerald-500' : 'text-indigo-500'}`}>{user.role}</p>
-          </div>
-          <div className="relative">
-            <img
-              src={getUserPhotoUrl(user.photo, user.name)}
-              alt={user.name}
-              className="w-12 h-12 rounded-2xl border-2 border-white shadow-md transition-transform group-hover:scale-105"
-            />
-            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full"></div>
-          </div>
-        </div>
+        {user ? (
+          <>
+            <NotificationBell />
+            <div className="flex items-center gap-4 group cursor-pointer">
+              <div className="text-right hidden sm:block">
+                <p className="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">{user.name}</p>
+                <p className={`text-[10px] font-extrabold uppercase tracking-widest ${user.role === 'ADMIN' ? 'text-rose-500' : user.role === 'DOCTOR' ? 'text-emerald-500' : 'text-indigo-500'}`}>{user.role}</p>
+              </div>
+              <div className="relative">
+                <img
+                  src={getUserPhotoUrl(user.photo, user.name)}
+                  alt={user.name}
+                  className="w-12 h-12 rounded-2xl border-2 border-white shadow-md transition-transform group-hover:scale-105"
+                />
+                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full"></div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <button
+              onClick={() => navigate('/login')}
+              className="px-5 py-2.5 text-sm font-bold text-slate-600 hover:text-indigo-600 transition-colors"
+            >
+              Sign In
+            </button>
+            <button
+              onClick={() => navigate('/login')}
+              className="px-5 py-2.5 bg-indigo-600 text-white rounded-2xl text-sm font-bold shadow-lg shadow-indigo-100 hover:-translate-y-0.5 transition-all"
+            >
+              Sign Up
+            </button>
+          </>
+        )}
       </div>
     </header>
   );

@@ -214,13 +214,12 @@ export const getMyAppointments = catchAsync(
 		const limit = Math.min(Number(req.query.limit) || 10, 200);
 		const skip = (page - 1) * limit;
 
-		const totalCount = await Appointment.countDocuments({
-			patient: req.user!.id,
-		});
+		const baseFilter: Record<string, unknown> = { patient: req.user!.id };
+		if (req.query.status) baseFilter.status = req.query.status;
 
-		const appointments = await Appointment.find({
-			patient: req.user!.id,
-		})
+		const totalCount = await Appointment.countDocuments(baseFilter);
+
+		const appointments = await Appointment.find(baseFilter)
 			.populate('service', 'name category duration imageCover')
 			.populate('doctor', 'name email photo')
 			.sort('-date')
