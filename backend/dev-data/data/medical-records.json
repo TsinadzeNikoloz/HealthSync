@@ -1,0 +1,102 @@
+[
+	{
+		"_id": "5c8a5e70b1bc8b5cdc94b001",
+		"patient": "5c8a1dfa2f8fb814b56fa181",
+		"doctor": "5c8a1f292f8fb814b56fa184",
+		"appointment": "5c8a4e70b1bc8b5cdc94a301",
+		"diagnosis": "Mild upper respiratory infection with nasal congestion",
+		"prescription": "Amoxicillin 500mg three times daily for 7 days, Paracetamol 500mg as needed for fever",
+		"notes": "Patient presented with a sore throat and runny nose for 3 days. Vitals normal. Advised rest and adequate hydration. Follow-up in one week if symptoms persist.",
+		"createdAt": "2025-12-10T09:25:00.000Z"
+	},
+	{
+		"_id": "5c8a5e70b1bc8b5cdc94b002",
+		"patient": "5c8a1ec62f8fb814b56fa183",
+		"doctor": "5c8a201e2f8fb814b56fa186",
+		"appointment": "5c8a4e70b1bc8b5cdc94a302",
+		"diagnosis": "Mild gingivitis with plaque buildup on lower anterior teeth",
+		"prescription": "Chlorhexidine mouthwash 0.12% twice daily for 2 weeks",
+		"notes": "Routine dental cleaning performed. Moderate plaque and tartar removed. Gums slightly inflamed but no pocketing. Patient advised to improve flossing habits and return in 6 months.",
+		"createdAt": "2025-12-12T11:00:00.000Z"
+	},
+	{
+		"_id": "5c8a5e70b1bc8b5cdc94b003",
+		"patient": "5c8a211f2f8fb814b56fa188",
+		"doctor": "5c8a1f292f8fb814b56fa184",
+		"appointment": "5c8a4e70b1bc8b5cdc94a303",
+		"diagnosis": "Slightly elevated cholesterol (LDL 145 mg/dL), all other values within normal range",
+		"prescription": "Dietary modifications recommended. Consider Atorvastatin 10mg daily if no improvement in 3 months.",
+		"notes": "Complete blood panel performed. CBC normal, liver and kidney function normal. Fasting glucose 92 mg/dL. LDL slightly above optimal range. Patient counseled on low-fat diet and increased physical activity. Recheck lipid panel in 3 months.",
+		"createdAt": "2025-12-15T08:20:00.000Z"
+	},
+	{
+		"_id": "5c8a5e70b1bc8b5cdc94b004",
+		"patient": "5c8a23de2f8fb814b56fa18e",
+		"doctor": "5c8a23412f8fb814b56fa18c",
+		"appointment": "5c8a4e70b1bc8b5cdc94a304",
+		"diagnosis": "Chronic lower back pain secondary to lumbar muscle strain, Grade I",
+		"prescription": "Ibuprofen 400mg as needed for pain, not exceeding 3 times daily. Continue physical therapy exercises at home.",
+		"notes": "Patient reports persistent lower back pain for 6 weeks following a lifting injury. Range of motion limited in flexion. No neurological deficits. Performed manual therapy and prescribed targeted strengthening exercises. Recommend 4 additional PT sessions over the next month.",
+		"createdAt": "2025-12-18T14:45:00.000Z"
+	},
+	{
+		"_id": "5c8a5e70b1bc8b5cdc94b005",
+		"patient": "5c8a1ec62f8fb814b56fa183",
+		"doctor": "5c8a1f292f8fb814b56fa184",
+		"appointment": "5c8a4e70b1bc8b5cdc94a305",
+		"diagnosis": "Normal sinus rhythm, no structural abnormalities detected. Benign premature ventricular contractions (PVCs)",
+		"prescription": "No medication required at this time",
+		"notes": "Patient reported occasional palpitations. ECG showed rare PVCs, otherwise normal. Echocardiogram unremarkable with normal ejection fraction of 62%. Blood pressure 118/76. Reassured patient. Advised to reduce caffeine intake and manage stress. Annual follow-up recommended.",
+		"createdAt": "2025-12-20T11:30:00.000Z"
+	},
+	{
+		"_id": "5c8a5e70b1bc8b5cdc94b006",
+		"patient": "5c8a211f2f8fb814b56fa188",
+		"doctor": "5c8a1f4e2f8fb814b56fa185",
+		"appointment": "5c8a4e70b1bc8b5cdc94a306",
+		"diagnosis": "Lipoma, right forearm, 2.5cm diameter, benign",
+		"prescription": "Cephalexin 500mg twice daily for 5 days post-operatively. Paracetamol 500mg every 6 hours as needed for pain.",
+		"notes": "Excision of subcutaneous lipoma performed under local anesthesia. Procedure uneventful, hemostasis achieved. Specimen sent for histopathology. Wound closed with 4-0 nylon sutures. Patient to return in 10 days for suture removal. Keep wound clean and dry.",
+		"createdAt": "2026-01-05T10:15:00.000Z"
+	},
+	{
+		"_id": "5c8a5e70b1bc8b5cdc94b007",
+		"patient": "5c8a24402f8fb814b56fa190",
+		"doctor": "5c8a1f4e2f8fb814b56fa185",
+		"appointment": "5c8a4e70b1bc8b5cdc94a307",
+		"diagnosis": "Mild myopia (-1.25 diopters both eyes), no retinal abnormalities",
+		"prescription": "Corrective lenses prescribed: OD -1.25, OS -1.25",
+		"notes": "Comprehensive eye examination performed including visual acuity, tonometry, and fundoscopy. Intraocular pressure normal at 14 mmHg bilaterally. Fundus examination unremarkable. Patient reports occasional headaches when reading. Prescribed corrective glasses for distance vision. Review in 12 months.",
+		"createdAt": "2026-01-08T13:30:00.000Z"
+	},
+	{
+		"_id": "5c8a5e70b1bc8b5cdc94b008",
+		"patient": "5c8a24282f8fb814b56fa18f",
+		"doctor": "5c8a201e2f8fb814b56fa186",
+		"appointment": "5c8a4e70b1bc8b5cdc94a308",
+		"diagnosis": "Contact dermatitis, likely allergic, affecting both hands",
+		"prescription": "Hydrocortisone cream 1% applied twice daily for 10 days. Cetirizine 10mg once daily for itching.",
+		"notes": "Patient presents with erythematous, pruritic rash on dorsal surfaces of both hands, onset 5 days ago. No vesicles or weeping. Suspects new hand soap as trigger. Advised to discontinue suspected irritant and use fragrance-free alternatives. Patch testing recommended if recurrent. Follow-up in 2 weeks.",
+		"createdAt": "2026-01-10T10:30:00.000Z"
+	},
+	{
+		"_id": "5c8a5e70b1bc8b5cdc94b009",
+		"patient": "5c8a1dfa2f8fb814b56fa181",
+		"doctor": "5c8a1f4e2f8fb814b56fa185",
+		"appointment": "5c8a4e70b1bc8b5cdc94a309",
+		"diagnosis": "Generalized anxiety disorder, moderate severity",
+		"prescription": "Sertraline 50mg once daily in the morning. May increase to 100mg after 4 weeks if tolerated.",
+		"notes": "Patient reports persistent worry, difficulty sleeping, and restlessness for the past 3 months. GAD-7 score: 14 (moderate). No suicidal ideation. Discussed cognitive behavioral therapy techniques and stress management strategies. Initiated SSRI with plan to reassess in 4 weeks. Referred to weekly CBT sessions.",
+		"createdAt": "2026-01-15T15:40:00.000Z"
+	},
+	{
+		"_id": "5c8a5e70b1bc8b5cdc94b010",
+		"patient": "5c8a20d32f8fb814b56fa187",
+		"doctor": "5c8a1f4e2f8fb814b56fa185",
+		"appointment": "5c8a4e70b1bc8b5cdc94a310",
+		"diagnosis": "Seasonal allergic rhinitis",
+		"prescription": "Fluticasone nasal spray 50mcg, 2 sprays each nostril once daily. Loratadine 10mg once daily as needed.",
+		"notes": "Patient presents with sneezing, nasal congestion, and watery eyes recurring each spring. No fever or purulent discharge. Nasal mucosa pale and boggy on examination. Lungs clear. Advised on allergen avoidance measures including keeping windows closed and showering after outdoor activities. Follow-up as needed.",
+		"createdAt": "2026-01-20T10:00:00.000Z"
+	}
+]

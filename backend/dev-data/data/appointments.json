@@ -1,0 +1,202 @@
+[
+	{
+		"_id": "5c8a4e70b1bc8b5cdc94a301",
+		"service": "5c88fa8cf4afda39709c295a",
+		"patient": "5c8a1dfa2f8fb814b56fa181",
+		"doctor": "5c8a1f292f8fb814b56fa184",
+		"date": "2025-12-10T09:00:00.000Z",
+		"status": "COMPLETED",
+		"price": 75,
+		"paid": true
+	},
+	{
+		"_id": "5c8a4e70b1bc8b5cdc94a302",
+		"service": "5c88fa8cf4afda39709c295b",
+		"patient": "5c8a1ec62f8fb814b56fa183",
+		"doctor": "5c8a201e2f8fb814b56fa186",
+		"date": "2025-12-12T10:30:00.000Z",
+		"status": "COMPLETED",
+		"price": 120,
+		"paid": true
+	},
+	{
+		"_id": "5c8a4e70b1bc8b5cdc94a303",
+		"service": "5c88fa8cf4afda39709c295c",
+		"patient": "5c8a211f2f8fb814b56fa188",
+		"doctor": "5c8a1f292f8fb814b56fa184",
+		"date": "2025-12-15T08:00:00.000Z",
+		"status": "COMPLETED",
+		"price": 90,
+		"paid": true
+	},
+	{
+		"_id": "5c8a4e70b1bc8b5cdc94a304",
+		"service": "5c88fa8cf4afda39709c295d",
+		"patient": "5c8a23de2f8fb814b56fa18e",
+		"doctor": "5c8a23412f8fb814b56fa18c",
+		"date": "2025-12-18T14:00:00.000Z",
+		"status": "COMPLETED",
+		"price": 150,
+		"paid": true
+	},
+	{
+		"_id": "5c8a4e70b1bc8b5cdc94a305",
+		"service": "5c88fa8cf4afda39709c2960",
+		"patient": "5c8a1ec62f8fb814b56fa183",
+		"doctor": "5c8a1f292f8fb814b56fa184",
+		"date": "2025-12-20T11:00:00.000Z",
+		"status": "COMPLETED",
+		"price": 200,
+		"paid": true
+	},
+	{
+		"_id": "5c8a4e70b1bc8b5cdc94a306",
+		"service": "5c88fa8cf4afda39709c2961",
+		"patient": "5c8a211f2f8fb814b56fa188",
+		"doctor": "5c8a1f4e2f8fb814b56fa185",
+		"date": "2026-01-05T09:00:00.000Z",
+		"status": "COMPLETED",
+		"price": 450,
+		"paid": true
+	},
+	{
+		"_id": "5c8a4e70b1bc8b5cdc94a307",
+		"service": "5c88fa8cf4afda39709c295e",
+		"patient": "5c8a24402f8fb814b56fa190",
+		"doctor": "5c8a1f4e2f8fb814b56fa185",
+		"date": "2026-01-08T13:00:00.000Z",
+		"status": "COMPLETED",
+		"price": 85,
+		"paid": true
+	},
+	{
+		"_id": "5c8a4e70b1bc8b5cdc94a308",
+		"service": "5c88fa8cf4afda39709c2962",
+		"patient": "5c8a24282f8fb814b56fa18f",
+		"doctor": "5c8a201e2f8fb814b56fa186",
+		"date": "2026-01-10T10:00:00.000Z",
+		"status": "COMPLETED",
+		"price": 95,
+		"paid": true
+	},
+	{
+		"_id": "5c8a4e70b1bc8b5cdc94a309",
+		"service": "5c88fa8cf4afda39709c2963",
+		"patient": "5c8a1dfa2f8fb814b56fa181",
+		"doctor": "5c8a1f4e2f8fb814b56fa185",
+		"date": "2026-01-15T15:00:00.000Z",
+		"status": "COMPLETED",
+		"price": 130,
+		"paid": true
+	},
+	{
+		"_id": "5c8a4e70b1bc8b5cdc94a310",
+		"service": "5c88fa8cf4afda39709c295a",
+		"patient": "5c8a20d32f8fb814b56fa187",
+		"doctor": "5c8a1f4e2f8fb814b56fa185",
+		"date": "2026-01-20T09:30:00.000Z",
+		"status": "COMPLETED",
+		"price": 75,
+		"paid": true
+	},
+	{
+		"_id": "5c8a4e70b1bc8b5cdc94a311",
+		"service": "5c88fa8cf4afda39709c295a",
+		"patient": "5c8a1e1a2f8fb814b56fa182",
+		"doctor": "5c8a1f292f8fb814b56fa184",
+		"date": "2026-01-25T10:00:00.000Z",
+		"status": "CANCELLED",
+		"price": 75,
+		"paid": false
+	},
+	{
+		"_id": "5c8a4e70b1bc8b5cdc94a312",
+		"service": "5c88fa8cf4afda39709c295f",
+		"patient": "5c8a245f2f8fb814b56fa191",
+		"doctor": "5c8a201e2f8fb814b56fa186",
+		"date": "2026-01-27T08:30:00.000Z",
+		"status": "COMPLETED",
+		"price": 110,
+		"paid": true
+	},
+	{
+		"_id": "5c8a4e70b1bc8b5cdc94a313",
+		"service": "5c88fa8cf4afda39709c295c",
+		"patient": "5c8a23c82f8fb814b56fa18d",
+		"doctor": "5c8a23412f8fb814b56fa18c",
+		"date": "2026-01-28T07:30:00.000Z",
+		"status": "CANCELLED",
+		"price": 90,
+		"paid": false
+	},
+	{
+		"_id": "5c8a4e70b1bc8b5cdc94a314",
+		"service": "5c88fa8cf4afda39709c295d",
+		"patient": "5c8a24282f8fb814b56fa18f",
+		"doctor": "5c8a23412f8fb814b56fa18c",
+		"date": "2026-02-01T14:00:00.000Z",
+		"status": "CONFIRMED",
+		"price": 150,
+		"paid": true
+	},
+	{
+		"_id": "5c8a4e70b1bc8b5cdc94a315",
+		"service": "5c88fa8cf4afda39709c2960",
+		"patient": "5c8a20d32f8fb814b56fa187",
+		"doctor": "5c8a1f292f8fb814b56fa184",
+		"date": "2026-02-03T11:00:00.000Z",
+		"status": "CONFIRMED",
+		"price": 200,
+		"paid": true
+	},
+	{
+		"_id": "5c8a4e70b1bc8b5cdc94a316",
+		"service": "5c88fa8cf4afda39709c295b",
+		"patient": "5c8a23de2f8fb814b56fa18e",
+		"doctor": "5c8a201e2f8fb814b56fa186",
+		"date": "2026-02-05T09:00:00.000Z",
+		"status": "PENDING",
+		"price": 120,
+		"paid": false
+	},
+	{
+		"_id": "5c8a4e70b1bc8b5cdc94a317",
+		"service": "5c88fa8cf4afda39709c2963",
+		"patient": "5c8a24402f8fb814b56fa190",
+		"doctor": "5c8a1f4e2f8fb814b56fa185",
+		"date": "2026-02-06T16:00:00.000Z",
+		"status": "PENDING",
+		"price": 130,
+		"paid": false
+	},
+	{
+		"_id": "5c8a4e70b1bc8b5cdc94a318",
+		"service": "5c88fa8cf4afda39709c295e",
+		"patient": "5c8a1e1a2f8fb814b56fa182",
+		"doctor": "5c8a1f4e2f8fb814b56fa185",
+		"date": "2026-02-07T10:30:00.000Z",
+		"status": "PENDING",
+		"price": 85,
+		"paid": false
+	},
+	{
+		"_id": "5c8a4e70b1bc8b5cdc94a319",
+		"service": "5c88fa8cf4afda39709c295a",
+		"patient": "5c8a245f2f8fb814b56fa191",
+		"doctor": "5c8a1f292f8fb814b56fa184",
+		"date": "2026-02-10T09:00:00.000Z",
+		"status": "PENDING",
+		"price": 75,
+		"paid": false
+	},
+	{
+		"_id": "5c8a4e70b1bc8b5cdc94a320",
+		"service": "5c88fa8cf4afda39709c2961",
+		"patient": "5c8a1ec62f8fb814b56fa183",
+		"doctor": "5c8a23412f8fb814b56fa18c",
+		"date": "2026-02-12T08:00:00.000Z",
+		"status": "PENDING",
+		"price": 450,
+		"paid": false
+	}
+]

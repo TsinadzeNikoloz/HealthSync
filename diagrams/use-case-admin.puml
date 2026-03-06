@@ -1,0 +1,104 @@
+@startuml Admin Use Case Diagram
+
+skinparam actorStyle awesome
+skinparam packageStyle rectangle
+skinparam usecaseBackgroundColor #F8FAFC
+skinparam usecaseBorderColor #4F46E5
+skinparam actorBackgroundColor #4F46E5
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam rectangleBorderColor #CBD5E1
+
+left to right direction
+
+actor "Admin" as admin
+
+rectangle "HealthSync System" {
+
+  package "Authentication" {
+    usecase "Log In" as UC_LOGIN
+    usecase "Log Out" as UC_LOGOUT
+    usecase "Forgot Password" as UC_FORGOT_PW
+    usecase "Reset Password" as UC_RESET_PW
+    usecase "Update Password" as UC_UPDATE_PW
+    usecase "Update Profile" as UC_UPDATE_PROFILE
+    usecase "Upload Photo" as UC_UPLOAD_PHOTO
+    usecase "Delete Account" as UC_DELETE_ACCOUNT
+  }
+
+  package "Service Management" {
+    usecase "Browse Services" as UC_BROWSE_SVC
+    usecase "View Service Details" as UC_VIEW_SVC
+    usecase "Filter/Sort Services" as UC_FILTER_SVC
+    usecase "Create Service" as UC_CREATE_SVC
+    usecase "Update Service" as UC_UPDATE_SVC
+    usecase "Delete Service" as UC_DELETE_SVC
+  }
+
+  package "Appointment Management" {
+    usecase "View All Appointments" as UC_VIEW_ALL_APT
+    usecase "Create Appointment" as UC_CREATE_APT
+    usecase "Update Appointment" as UC_UPDATE_APT
+    usecase "Delete Appointment" as UC_DELETE_APT
+  }
+
+  package "Medical Records" {
+    usecase "View All Records" as UC_VIEW_ALL_REC
+    usecase "View Patient Records" as UC_VIEW_PAT_REC
+    usecase "View Record by\nAppointment" as UC_VIEW_APT_REC
+    usecase "Create Medical Record" as UC_CREATE_REC
+    usecase "Update Medical Record" as UC_UPDATE_REC
+    usecase "Delete Medical Record" as UC_DELETE_REC
+  }
+
+  package "Reviews" {
+    usecase "View Reviews" as UC_VIEW_REV
+    usecase "Update Review" as UC_UPDATE_REV
+    usecase "Delete Review" as UC_DELETE_REV
+  }
+
+  package "User Management" {
+    usecase "View Dashboard\nStatistics" as UC_DASHBOARD
+    usecase "View All Users" as UC_VIEW_USERS
+    usecase "Create User" as UC_CREATE_USER
+    usecase "Update User" as UC_UPDATE_USER
+    usecase "Delete User" as UC_DELETE_USER
+  }
+}
+
+' === Admin Associations ===
+admin --> UC_LOGIN
+admin --> UC_LOGOUT
+admin --> UC_FORGOT_PW
+admin --> UC_UPDATE_PW
+admin --> UC_UPDATE_PROFILE
+admin --> UC_DELETE_ACCOUNT
+admin --> UC_BROWSE_SVC
+admin --> UC_VIEW_SVC
+admin --> UC_FILTER_SVC
+admin --> UC_CREATE_SVC
+admin --> UC_UPDATE_SVC
+admin --> UC_DELETE_SVC
+admin --> UC_VIEW_ALL_APT
+admin --> UC_CREATE_APT
+admin --> UC_UPDATE_APT
+admin --> UC_DELETE_APT
+admin --> UC_VIEW_ALL_REC
+admin --> UC_VIEW_PAT_REC
+admin --> UC_VIEW_APT_REC
+admin --> UC_CREATE_REC
+admin --> UC_UPDATE_REC
+admin --> UC_DELETE_REC
+admin --> UC_VIEW_REV
+admin --> UC_UPDATE_REV
+admin --> UC_DELETE_REV
+admin --> UC_DASHBOARD
+admin --> UC_VIEW_USERS
+admin --> UC_CREATE_USER
+admin --> UC_UPDATE_USER
+admin --> UC_DELETE_USER
+
+' === Includes / Extends ===
+UC_FORGOT_PW ..> UC_RESET_PW : <<include>>
+UC_UPDATE_PROFILE ..> UC_UPLOAD_PHOTO : <<extend>>
+
+@enduml

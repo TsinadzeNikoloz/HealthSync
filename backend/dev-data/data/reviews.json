@@ -1,0 +1,142 @@
+[
+	{
+		"_id": "5c8a34ed14eb5c17645c9108",
+		"review": "Very thorough consultation. The doctor took time to explain everything clearly and answered all my questions.",
+		"rating": 5,
+		"user": "5c8a1dfa2f8fb814b56fa181",
+		"service": "5c88fa8cf4afda39709c295a"
+	},
+	{
+		"_id": "5c8a355b14eb5c17645c9109",
+		"review": "Good experience overall. The wait time was a bit long but the consultation itself was excellent.",
+		"rating": 4,
+		"user": "5c8a1e1a2f8fb814b56fa182",
+		"service": "5c88fa8cf4afda39709c295a"
+	},
+	{
+		"_id": "5c8a35b214eb5c17645c910a",
+		"review": "Dr. Morrison was fantastic with my dental cleaning. Very gentle and professional.",
+		"rating": 5,
+		"user": "5c8a1ec62f8fb814b56fa183",
+		"service": "5c88fa8cf4afda39709c295b"
+	},
+	{
+		"_id": "5c8a361b14eb5c17645c910b",
+		"review": "Clean facility and the dental hygienist was very skilled. Will definitely come back.",
+		"rating": 4,
+		"user": "5c8a20d32f8fb814b56fa187",
+		"service": "5c88fa8cf4afda39709c295b"
+	},
+	{
+		"_id": "5c8a369b14eb5c17645c910c",
+		"review": "Quick and painless blood draw. Got my results the next day via email. Very convenient.",
+		"rating": 5,
+		"user": "5c8a211f2f8fb814b56fa188",
+		"service": "5c88fa8cf4afda39709c295c"
+	},
+	{
+		"_id": "5c8a36c614eb5c17645c910d",
+		"review": "Professional staff. The results came with a clear explanation from the doctor.",
+		"rating": 5,
+		"user": "5c8a23c82f8fb814b56fa18d",
+		"service": "5c88fa8cf4afda39709c295c"
+	},
+	{
+		"_id": "5c8a373514eb5c17645c910e",
+		"review": "The blood test was efficient, though I wish the fasting instructions had been more clearly communicated beforehand.",
+		"rating": 4,
+		"user": "5c8a1dfa2f8fb814b56fa181",
+		"service": "5c88fa8cf4afda39709c295c"
+	},
+	{
+		"_id": "5c8a379e14eb5c17645c910f",
+		"review": "Incredible physical therapy! After 6 sessions my back pain is almost gone. Dr. Hadley really knows what he is doing.",
+		"rating": 5,
+		"user": "5c8a23de2f8fb814b56fa18e",
+		"service": "5c88fa8cf4afda39709c295d"
+	},
+	{
+		"_id": "5c8a380514eb5c17645c9110",
+		"review": "Very personalized approach to therapy. I felt the exercises were targeted and effective.",
+		"rating": 5,
+		"user": "5c8a24282f8fb814b56fa18f",
+		"service": "5c88fa8cf4afda39709c295d"
+	},
+	{
+		"_id": "5c8a386d14eb5c17645c9111",
+		"review": "Comprehensive eye exam. They found an issue I did not know about and referred me to a specialist promptly.",
+		"rating": 5,
+		"user": "5c8a24402f8fb814b56fa190",
+		"service": "5c88fa8cf4afda39709c295e"
+	},
+	{
+		"_id": "5c8a38d514eb5c17645c9112",
+		"review": "Good exam, though the eye dilation drops made driving home difficult. Wish I was warned more clearly.",
+		"rating": 4,
+		"user": "5c8a1e1a2f8fb814b56fa182",
+		"service": "5c88fa8cf4afda39709c295e"
+	},
+	{
+		"_id": "5c8a393d14eb5c17645c9113",
+		"review": "Fast and professional X-ray service. The radiologist explained the results on the spot.",
+		"rating": 4,
+		"user": "5c8a245f2f8fb814b56fa191",
+		"service": "5c88fa8cf4afda39709c295f"
+	},
+	{
+		"_id": "5c8a39a514eb5c17645c9114",
+		"review": "The cardiac checkup was very reassuring. They did a thorough ECG and explained my heart health in detail.",
+		"rating": 5,
+		"user": "5c8a1ec62f8fb814b56fa183",
+		"service": "5c88fa8cf4afda39709c2960"
+	},
+	{
+		"_id": "5c8a3a0d14eb5c17645c9115",
+		"review": "Best cardiac checkup I have ever had. The doctor was knowledgeable and reassuring.",
+		"rating": 5,
+		"user": "5c8a20d32f8fb814b56fa187",
+		"service": "5c88fa8cf4afda39709c2960"
+	},
+	{
+		"_id": "5c8a3a7514eb5c17645c9116",
+		"review": "Good cardiac assessment but felt a bit rushed at the end when discussing lifestyle changes.",
+		"rating": 4,
+		"user": "5c8a23c82f8fb814b56fa18d",
+		"service": "5c88fa8cf4afda39709c2960"
+	},
+	{
+		"_id": "5c8a3add14eb5c17645c9117",
+		"review": "The minor surgery went smoothly. Minimal pain and the scar is barely visible now.",
+		"rating": 5,
+		"user": "5c8a211f2f8fb814b56fa188",
+		"service": "5c88fa8cf4afda39709c2961"
+	},
+	{
+		"_id": "5c8a3b4514eb5c17645c9118",
+		"review": "Good dermatology consultation. Got clear treatment plan for my eczema.",
+		"rating": 4,
+		"user": "5c8a24282f8fb814b56fa18f",
+		"service": "5c88fa8cf4afda39709c2962"
+	},
+	{
+		"_id": "5c8a3bad14eb5c17645c9119",
+		"review": "Dr. Morrison was very understanding and knowledgeable about skin conditions. The prescribed treatment is working well.",
+		"rating": 4,
+		"user": "5c8a23de2f8fb814b56fa18e",
+		"service": "5c88fa8cf4afda39709c2962"
+	},
+	{
+		"_id": "5c8a3c1514eb5c17645c911a",
+		"review": "Life-changing therapy sessions. I finally have tools to manage my anxiety. Cannot recommend enough.",
+		"rating": 5,
+		"user": "5c8a1dfa2f8fb814b56fa181",
+		"service": "5c88fa8cf4afda39709c2963"
+	},
+	{
+		"_id": "5c8a3c7d14eb5c17645c911b",
+		"review": "Very safe and comfortable environment. The therapist is empathetic and professional.",
+		"rating": 5,
+		"user": "5c8a24402f8fb814b56fa190",
+		"service": "5c88fa8cf4afda39709c2963"
+	}
+]

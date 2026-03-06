@@ -1,0 +1,62 @@
+@startuml Guest Use Case Diagram
+
+skinparam actorStyle awesome
+skinparam packageStyle rectangle
+skinparam usecaseBackgroundColor #F8FAFC
+skinparam usecaseBorderColor #4F46E5
+skinparam actorBackgroundColor #4F46E5
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam rectangleBorderColor #CBD5E1
+
+left to right direction
+
+actor "Guest\n(Unauthenticated)" as guest
+
+rectangle "HealthSync System" {
+
+  package "Authentication" {
+    usecase "Sign Up" as UC_SIGNUP
+    usecase "Log In" as UC_LOGIN
+    usecase "Forgot Password" as UC_FORGOT_PW
+    usecase "Reset Password" as UC_RESET_PW
+  }
+
+  package "Services" {
+    usecase "Browse Services" as UC_BROWSE_SVC
+    usecase "View Service Details" as UC_VIEW_SVC
+    usecase "Filter/Sort Services" as UC_FILTER_SVC
+    usecase "View Service Statistics" as UC_VIEW_STATS
+  }
+
+  package "Reviews" {
+    usecase "View Reviews" as UC_VIEW_REV
+  }
+
+  package "Appointments" {
+    usecase "Book Appointment\n(Stripe Checkout)" as UC_BOOK_APT
+    usecase "Redirect to Login" as UC_REDIRECT_LOGIN
+  }
+}
+
+' === Guest Associations ===
+guest --> UC_SIGNUP
+guest --> UC_LOGIN
+guest --> UC_FORGOT_PW
+guest --> UC_BROWSE_SVC
+guest --> UC_VIEW_SVC
+guest --> UC_FILTER_SVC
+guest --> UC_VIEW_STATS
+guest --> UC_VIEW_REV
+guest --> UC_BOOK_APT
+
+' === Includes / Extends ===
+UC_FORGOT_PW ..> UC_RESET_PW : <<include>>
+UC_BOOK_APT ..> UC_REDIRECT_LOGIN : <<include>>
+
+note right of UC_REDIRECT_LOGIN
+  Guest is redirected to
+  the login page when
+  attempting to book
+end note
+
+@enduml

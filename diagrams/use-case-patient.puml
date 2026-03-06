@@ -1,0 +1,76 @@
+@startuml Patient Use Case Diagram
+
+skinparam actorStyle awesome
+skinparam packageStyle rectangle
+skinparam usecaseBackgroundColor #F8FAFC
+skinparam usecaseBorderColor #4F46E5
+skinparam actorBackgroundColor #4F46E5
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam rectangleBorderColor #CBD5E1
+
+left to right direction
+
+actor "Patient" as patient
+
+rectangle "HealthSync System" {
+
+  package "Authentication" {
+    usecase "Sign Up" as UC_SIGNUP
+    usecase "Log In" as UC_LOGIN
+    usecase "Log Out" as UC_LOGOUT
+    usecase "Forgot Password" as UC_FORGOT_PW
+    usecase "Reset Password" as UC_RESET_PW
+    usecase "Update Password" as UC_UPDATE_PW
+    usecase "Update Profile" as UC_UPDATE_PROFILE
+    usecase "Upload Photo" as UC_UPLOAD_PHOTO
+    usecase "Delete Account" as UC_DELETE_ACCOUNT
+  }
+
+  package "Services" {
+    usecase "Browse Services" as UC_BROWSE_SVC
+    usecase "View Service Details" as UC_VIEW_SVC
+    usecase "Filter/Sort Services" as UC_FILTER_SVC
+  }
+
+  package "Appointments" {
+    usecase "Book Appointment\n(Stripe Checkout)" as UC_BOOK_APT
+    usecase "View My Appointments" as UC_VIEW_MY_APT
+  }
+
+  package "Medical Records" {
+    usecase "View Medical History" as UC_VIEW_MY_REC
+  }
+
+  package "Reviews" {
+    usecase "View Reviews" as UC_VIEW_REV
+    usecase "Write Review" as UC_WRITE_REV
+    usecase "Update Review" as UC_UPDATE_REV
+    usecase "Delete Review" as UC_DELETE_REV
+  }
+}
+
+' === Patient Associations ===
+patient --> UC_SIGNUP
+patient --> UC_LOGIN
+patient --> UC_LOGOUT
+patient --> UC_FORGOT_PW
+patient --> UC_UPDATE_PW
+patient --> UC_UPDATE_PROFILE
+patient --> UC_DELETE_ACCOUNT
+patient --> UC_BROWSE_SVC
+patient --> UC_VIEW_SVC
+patient --> UC_FILTER_SVC
+patient --> UC_BOOK_APT
+patient --> UC_VIEW_MY_APT
+patient --> UC_VIEW_MY_REC
+patient --> UC_VIEW_REV
+patient --> UC_WRITE_REV
+patient --> UC_UPDATE_REV
+patient --> UC_DELETE_REV
+
+' === Includes / Extends ===
+UC_FORGOT_PW ..> UC_RESET_PW : <<include>>
+UC_UPDATE_PROFILE ..> UC_UPLOAD_PHOTO : <<extend>>
+UC_BOOK_APT ..> UC_VIEW_SVC : <<include>>
+
+@enduml

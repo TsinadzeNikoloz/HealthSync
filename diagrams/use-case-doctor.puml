@@ -1,0 +1,88 @@
+@startuml Doctor Use Case Diagram
+
+skinparam actorStyle awesome
+skinparam packageStyle rectangle
+skinparam usecaseBackgroundColor #F8FAFC
+skinparam usecaseBorderColor #4F46E5
+skinparam actorBackgroundColor #4F46E5
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam rectangleBorderColor #CBD5E1
+
+left to right direction
+
+actor "Doctor" as doctor
+
+rectangle "HealthSync System" {
+
+  package "Authentication" {
+    usecase "Sign Up" as UC_SIGNUP
+    usecase "Log In" as UC_LOGIN
+    usecase "Log Out" as UC_LOGOUT
+    usecase "Forgot Password" as UC_FORGOT_PW
+    usecase "Reset Password" as UC_RESET_PW
+    usecase "Update Password" as UC_UPDATE_PW
+    usecase "Update Profile" as UC_UPDATE_PROFILE
+    usecase "Upload Photo" as UC_UPLOAD_PHOTO
+    usecase "Delete Account" as UC_DELETE_ACCOUNT
+  }
+
+  package "Services" {
+    usecase "Browse Services" as UC_BROWSE_SVC
+    usecase "View Service Details" as UC_VIEW_SVC
+    usecase "Filter/Sort Services" as UC_FILTER_SVC
+  }
+
+  package "Appointment Management" {
+    usecase "View All Appointments" as UC_VIEW_ALL_APT
+    usecase "Create Appointment" as UC_CREATE_APT
+    usecase "Confirm Appointment" as UC_CONFIRM_APT
+    usecase "Cancel Appointment" as UC_CANCEL_APT
+    usecase "Complete Appointment" as UC_COMPLETE_APT
+    usecase "Delete Appointment" as UC_DELETE_APT
+  }
+
+  package "Medical Records" {
+    usecase "View All Records" as UC_VIEW_ALL_REC
+    usecase "View Patient Records" as UC_VIEW_PAT_REC
+    usecase "View Record by\nAppointment" as UC_VIEW_APT_REC
+    usecase "Create Medical Record" as UC_CREATE_REC
+    usecase "Update Medical Record" as UC_UPDATE_REC
+  }
+
+  package "Reviews" {
+    usecase "View Reviews" as UC_VIEW_REV
+  }
+}
+
+' === Doctor Associations ===
+doctor --> UC_SIGNUP
+doctor --> UC_LOGIN
+doctor --> UC_LOGOUT
+doctor --> UC_FORGOT_PW
+doctor --> UC_UPDATE_PW
+doctor --> UC_UPDATE_PROFILE
+doctor --> UC_DELETE_ACCOUNT
+doctor --> UC_BROWSE_SVC
+doctor --> UC_VIEW_SVC
+doctor --> UC_FILTER_SVC
+doctor --> UC_VIEW_ALL_APT
+doctor --> UC_CREATE_APT
+doctor --> UC_CONFIRM_APT
+doctor --> UC_CANCEL_APT
+doctor --> UC_COMPLETE_APT
+doctor --> UC_DELETE_APT
+doctor --> UC_VIEW_ALL_REC
+doctor --> UC_VIEW_PAT_REC
+doctor --> UC_VIEW_APT_REC
+doctor --> UC_CREATE_REC
+doctor --> UC_UPDATE_REC
+doctor --> UC_VIEW_REV
+
+' === Includes / Extends ===
+UC_FORGOT_PW ..> UC_RESET_PW : <<include>>
+UC_UPDATE_PROFILE ..> UC_UPLOAD_PHOTO : <<extend>>
+UC_CONFIRM_APT ..> UC_VIEW_ALL_APT : <<include>>
+UC_CANCEL_APT ..> UC_VIEW_ALL_APT : <<include>>
+UC_COMPLETE_APT ..> UC_VIEW_ALL_APT : <<include>>
+
+@enduml
