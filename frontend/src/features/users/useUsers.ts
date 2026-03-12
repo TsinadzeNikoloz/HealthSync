@@ -7,19 +7,23 @@ export function useUsers() {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
 
+  // FILTER
   const filterValue = searchParams.get("role");
   const filter =
     !filterValue || filterValue === "all"
       ? null
       : { field: "role", value: filterValue };
 
+  // SORT
   const sortByRaw = searchParams.get("sortBy") || "name-asc";
   const [field, direction] = sortByRaw.split("-") as [string, "asc" | "desc"];
   const sortBy = { field, direction };
 
+  // PAGINATION
   const page = Number(searchParams.get("page")) || 1;
   const search = searchParams.get("search") || "";
 
+  // QUERY
   const {
     data: { data: users, count } = { data: [], count: 0 },
     isPending,
@@ -29,7 +33,7 @@ export function useUsers() {
     queryFn: () => getUsers({ filter, sortBy, page, search }),
   });
 
-  // Prefetch next/prev pages
+  // PRE-FETCHING
   const pageCount = Math.ceil(count / PAGE_SIZE);
 
   if (page < pageCount)

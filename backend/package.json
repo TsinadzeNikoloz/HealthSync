@@ -8,7 +8,9 @@
 		"start:dev": "tsx watch --env-file=config.env server.ts",
 		"start:prod": "cross-env NODE_ENV=production node dist/server.js",
 		"build": "tsc",
-		"import:data": "tsx dev-data/data/import-dev-data.ts"
+		"import:data": "tsx dev-data/data/import-dev-data.ts",
+		"test": "vitest run",
+		"test:watch": "vitest"
 	},
 	"author": "Nikoloz Tsinadze",
 	"license": "ISC",
@@ -27,6 +29,7 @@
 		"mongoose": "^8.18.1",
 		"morgan": "^1.10.1",
 		"multer": "^1.4.4",
+		"node-cron": "^4.2.1",
 		"nodemailer": "^7.0.6",
 		"sharp": "^0.34.4",
 		"stripe": "^17.0.0",
@@ -42,11 +45,16 @@
 		"@types/morgan": "^1.9.9",
 		"@types/multer": "^1.4.12",
 		"@types/node": "^22.0.0",
+		"@types/node-cron": "^3.0.11",
 		"@types/nodemailer": "^6.4.17",
+		"@types/supertest": "^7.2.0",
 		"@types/validator": "^13.12.2",
 		"cross-env": "^10.0.0",
+		"mongodb-memory-server": "^11.0.1",
 		"prettier": "^3.6.2",
+		"supertest": "^7.2.2",
 		"tsx": "^4.0.0",
-		"typescript": "^5.7.0"
+		"typescript": "^5.7.0",
+		"vitest": "^4.0.18"
 	}
 }

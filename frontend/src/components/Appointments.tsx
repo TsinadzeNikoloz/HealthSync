@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Appointment, AppointmentStatus, Role } from '../types';
 import { useUser } from '../features/authentication/useUser';
@@ -9,13 +9,11 @@ import { useCreateMedicalRecord } from '../features/medical-records/useCreateMed
 import AppointmentItem from './appointments/AppointmentItem';
 import StatCard from './dashboard/StatCard';
 import Pagination from './ui/Pagination';
+import Modal from './ui/Modal';
+import MedicalRecordForm from './medical/MedicalRecordForm';
 
-const inputCls =
-	'w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 outline-none font-semibold text-slate-700';
-const labelCls =
-	'text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] ml-1';
 
-const Appointments: React.FC = () => {
+function Appointments() {
 	const { user } = useUser();
 	const [searchParams, setSearchParams] = useSearchParams();
 	const { appointments, count } = useAppointments();
@@ -54,7 +52,7 @@ const Appointments: React.FC = () => {
 		setNotes('');
 	};
 
-	const handleCompleteSubmit = (e: React.FormEvent) => {
+	const handleCompleteSubmit = (e: { preventDefault(): void }) => {
 		e.preventDefault();
 		if (!completingApt) return;
 		createRecord(
@@ -195,83 +193,26 @@ const Appointments: React.FC = () => {
 			<Pagination count={count} />
 
 			{/* Complete Appointment Modal */}
-			{completingApt && (
-				<div className="fixed inset-0 bg-slate-900/40 backdrop-blur-xl z-[100] flex items-center justify-center p-6">
-					<div className="bg-white rounded-[3rem] w-full max-w-xl overflow-hidden shadow-2xl animate-in zoom-in duration-300">
-						<div className="px-10 py-8 border-b border-slate-50 flex justify-between items-center">
-							<div>
-								<h3 className="text-2xl font-extrabold text-slate-800">
-									Complete Appointment
-								</h3>
-								<p className="text-sm text-slate-500 mt-1">
-									Patient:{' '}
-									<span className="font-bold text-slate-700">
-										{completingApt.patient.name}
-									</span>
-								</p>
-							</div>
-							<button
-								onClick={() => setCompletingApt(null)}
-								className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:text-slate-900 transition-all"
-							>
-								<i className="fas fa-times"></i>
-							</button>
-						</div>
-
-						<form
-							onSubmit={handleCompleteSubmit}
-							className="p-10 flex flex-col gap-6"
-						>
-							<div className="flex flex-col gap-2">
-								<label className={labelCls}>
-									Diagnosis <span className="text-rose-400">*</span>
-								</label>
-								<input
-									className={inputCls}
-									value={diagnosis}
-									onChange={(e) => setDiagnosis(e.target.value)}
-									placeholder="e.g. Hypertension Stage 1"
-									required
-								/>
-							</div>
-
-							<div className="flex flex-col gap-2">
-								<label className={labelCls}>Prescription</label>
-								<textarea
-									className={`${inputCls} h-24 resize-none`}
-									value={prescription}
-									onChange={(e) => setPrescription(e.target.value)}
-									placeholder="Medicine name & dosage..."
-								/>
-							</div>
-
-							<div className="flex flex-col gap-2">
-								<label className={labelCls}>Clinical Notes</label>
-								<textarea
-									className={`${inputCls} h-28 resize-none`}
-									value={notes}
-									onChange={(e) => setNotes(e.target.value)}
-									placeholder="Confidential clinical observations..."
-								/>
-							</div>
-
-							<div className="pt-2">
-								<button
-									type="submit"
-									disabled={isCreating || isUpdating}
-									className="w-full bg-indigo-600 text-white py-5 rounded-2xl font-black shadow-xl shadow-indigo-100 hover:-translate-y-1 active:scale-95 transition-all disabled:opacity-50 disabled:translate-y-0"
-								>
-									{isCreating || isUpdating
-										? 'Saving...'
-										: 'Save Record & Complete'}
-								</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			)}
+			<Modal
+				isOpen={!!completingApt}
+				onClose={() => setCompletingApt(null)}
+				title="Complete Appointment"
+				subtitle={completingApt ? `Patient: ${completingApt.patient.name}` : undefined}
+			>
+				<MedicalRecordForm
+					diagnosis={diagnosis}
+					prescription={prescription}
+					notes={notes}
+					onDiagnosis={setDiagnosis}
+					onPrescription={setPrescription}
+					onNotes={setNotes}
+					onSubmit={handleCompleteSubmit}
+					isLoading={isCreating || isUpdating}
+					submitLabel="Save Record & Complete"
+				/>
+			</Modal>
 		</div>
 	);
-};
+}
 
 export default Appointments;

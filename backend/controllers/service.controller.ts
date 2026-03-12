@@ -1,5 +1,6 @@
 import sharp from 'sharp';
 import multer from 'multer';
+import mongoose from 'mongoose';
 import type { Request, Response, NextFunction } from 'express';
 import AppError from '../utils/appError.js';
 import Service from '../models/service.model.js';
@@ -81,10 +82,23 @@ export const aliasTopServices = (
 // @access      Public
 export const getAllServices = factory.getAll(Service);
 
-// @desc        Get single service by id (with reviews)
+// @desc        Get single service by slug or id (with reviews)
 // @route       GET /api/v1/services/:id
 // @access      Public
-export const getService = factory.getOne(Service, { path: 'reviews' });
+export const getService = catchAsync(
+	async (req: Request, res: Response, next: NextFunction) => {
+		const { id } = req.params;
+		const query = mongoose.Types.ObjectId.isValid(id)
+			? Service.findById(id)
+			: Service.findOne({ slug: id });
+
+		const service = await query.populate('reviews');
+
+		if (!service) return next(new AppError('No service found', 404));
+
+		res.status(200).json({ status: 'success', data: { doc: service } });
+	},
+);
 
 // @desc        Create new service
 // @route       POST /api/v1/services

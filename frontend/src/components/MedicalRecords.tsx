@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Role } from '../types';
 import { useUser } from '../features/authentication/useUser';
 import { useMedicalRecords } from '../features/medical-records/useMedicalRecords';
 import { useCreateMedicalRecord } from '../features/medical-records/useCreateMedicalRecord';
 import { useAppointments } from '../features/appointments/useAppointments';
 import MedicalRecordCard from './medical/MedicalRecordCard';
+import MedicalRecordForm from './medical/MedicalRecordForm';
+import Modal from './ui/Modal';
 import Pagination from './ui/Pagination';
 
-const MedicalRecords: React.FC = () => {
+function MedicalRecords() {
 	const { user } = useUser();
 	const { records, count } = useMedicalRecords();
 	const { createRecord } = useCreateMedicalRecord();
@@ -47,7 +49,7 @@ const MedicalRecords: React.FC = () => {
 				new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
 		);
 
-	const handleAddRecord = (e: React.FormEvent) => {
+	const handleAddRecord = (e: { preventDefault(): void }) => {
 		e.preventDefault();
 		if (!selectedPatientId || !diagnosis) return;
 
@@ -124,23 +126,24 @@ const MedicalRecords: React.FC = () => {
 				</div>
 			) : (
 				<div className="space-y-8">
-					{selectedPatient && (user?.role === Role.DOCTOR || user?.role === Role.ADMIN) && (
-						<div className="bg-indigo-50 border border-indigo-100 rounded-3xl p-6 flex items-center gap-6">
-							<img
-								src={`https://ui-avatars.com/api/?name=${encodeURIComponent(selectedPatient.name)}&background=6366f1&color=fff&size=64`}
-								className="w-16 h-16 rounded-2xl border-4 border-white shadow-sm"
-								alt=""
-							/>
-							<div>
-								<h4 className="font-bold text-indigo-900 text-lg">
-									{selectedPatient.name}
-								</h4>
-								<p className="text-indigo-600 text-sm font-medium">
-									{selectedPatient.email}
-								</p>
+					{selectedPatient &&
+						(user?.role === Role.DOCTOR || user?.role === Role.ADMIN) && (
+							<div className="bg-indigo-50 border border-indigo-100 rounded-3xl p-6 flex items-center gap-6">
+								<img
+									src={`https://ui-avatars.com/api/?name=${encodeURIComponent(selectedPatient.name)}&background=6366f1&color=fff&size=64`}
+									className="w-16 h-16 rounded-2xl border-4 border-white shadow-sm"
+									alt=""
+								/>
+								<div>
+									<h4 className="font-bold text-indigo-900 text-lg">
+										{selectedPatient.name}
+									</h4>
+									<p className="text-indigo-600 text-sm font-medium">
+										{selectedPatient.email}
+									</p>
+								</div>
 							</div>
-						</div>
-					)}
+						)}
 
 					{filteredRecords.length === 0 ? (
 						<div className="bg-white rounded-[2.5rem] p-16 text-center border border-slate-100 shadow-sm">
@@ -166,79 +169,27 @@ const MedicalRecords: React.FC = () => {
 			)}
 
 			{/* Add Record Modal */}
-			{isAdding && (
-				<div className="fixed inset-0 bg-slate-900/40 backdrop-blur-xl z-[100] flex items-center justify-center p-6">
-					<div className="bg-white rounded-[3rem] w-full max-w-2xl overflow-hidden shadow-2xl animate-in zoom-in duration-300">
-						<div className="px-10 py-8 border-b border-slate-50 flex justify-between items-center">
-							<div>
-								<h3 className="text-2xl font-extrabold text-slate-800">
-									Add Clinical Entry
-								</h3>
-								<p className="text-sm text-slate-500 mt-1">
-									Recording for: {selectedPatient?.name}
-								</p>
-							</div>
-							<button
-								onClick={() => setIsAdding(false)}
-								className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:text-slate-900 transition-all"
-							>
-								<i className="fas fa-times"></i>
-							</button>
-						</div>
-
-						<form onSubmit={handleAddRecord} className="p-10 space-y-6">
-							<div className="space-y-2">
-								<label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
-									Diagnosis
-								</label>
-								<input
-									type="text"
-									value={diagnosis}
-									onChange={(e) => setDiagnosis(e.target.value)}
-									className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 outline-none font-semibold text-slate-700"
-									placeholder="e.g. Chronic Bronchitis"
-									required
-								/>
-							</div>
-
-							<div className="space-y-2">
-								<label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
-									Prescription
-								</label>
-								<textarea
-									value={prescription}
-									onChange={(e) => setPrescription(e.target.value)}
-									className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 outline-none font-semibold text-slate-700 h-24 resize-none"
-									placeholder="Medicine name & dosage"
-								/>
-							</div>
-
-							<div className="space-y-2">
-								<label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
-									Internal Notes
-								</label>
-								<textarea
-									value={notes}
-									onChange={(e) => setNotes(e.target.value)}
-									className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 outline-none font-semibold text-slate-700 h-32 resize-none"
-									placeholder="Confidential clinical notes..."
-								/>
-							</div>
-
-							<div className="pt-6">
-								<button
-									type="submit"
-									className="w-full bg-slate-900 text-white py-5 rounded-2xl font-black shadow-xl shadow-slate-100 hover:-translate-y-1 active:scale-95 transition-all"
-								>
-									Finalize Medical Record
-								</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			)}
+			<Modal
+				isOpen={isAdding}
+				onClose={() => setIsAdding(false)}
+				title="Add Clinical Entry"
+				subtitle={
+					selectedPatient ? `Recording for: ${selectedPatient.name}` : undefined
+				}
+			>
+				<MedicalRecordForm
+					diagnosis={diagnosis}
+					prescription={prescription}
+					notes={notes}
+					onDiagnosis={setDiagnosis}
+					onPrescription={setPrescription}
+					onNotes={setNotes}
+					onSubmit={handleAddRecord}
+					submitLabel="Finalize Medical Record"
+				/>
+			</Modal>
 		</div>
 	);
-};
+}
 
 export default MedicalRecords;

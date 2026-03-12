@@ -17,6 +17,7 @@ import reviewRouter from './routes/review.routes.js';
 import appointmentRouter from './routes/appointment.routes.js';
 import medicalRecordRouter from './routes/medicalRecord.routes.js';
 import notificationRouter from './routes/notification.routes.js';
+import contactRouter from './routes/contact.routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -72,6 +73,7 @@ app.use('/api/v1/reviews', reviewRouter);
 app.use('/api/v1/appointments', appointmentRouter);
 app.use('/api/v1/medical-records', medicalRecordRouter);
 app.use('/api/v1/notifications', notificationRouter);
+app.use('/api/v1/contact', contactRouter);
 
 app.all('*', (req, _res, next) => {
 	next(new AppError(`Can't find ${req.originalUrl} on this Server`, 404));

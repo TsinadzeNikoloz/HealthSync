@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Service } from '../../types';
 import ConfirmModal from '../ui/ConfirmModal';
@@ -11,7 +11,7 @@ interface ServiceCardProps {
   onDelete?: (id: string) => void;
 }
 
-const ServiceCard: React.FC<ServiceCardProps> = ({ service, isAdmin, onEdit, onDelete }) => {
+function ServiceCard({ service, isAdmin, onEdit, onDelete }: ServiceCardProps) {
   const navigate = useNavigate();
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -65,7 +65,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, isAdmin, onEdit, onD
             </div>
           </div>
           <button
-            onClick={() => navigate(`/services/${service.id}`)}
+            onClick={() => navigate(`/services/${service.slug ?? service.id}`)}
             className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-bold text-sm transition-all shadow-lg shadow-indigo-100 active:scale-95"
           >
             {isAdmin ? 'View' : 'Book Session'}
@@ -84,6 +84,6 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, isAdmin, onEdit, onD
       )}
     </div>
   );
-};
+}
 
 export default ServiceCard;

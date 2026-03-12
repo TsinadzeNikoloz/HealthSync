@@ -11,6 +11,7 @@ backend/config.env
 
 # Excluded folders
 frontend copy/
+frontend2/
 _messaging_feature/
 requirements-specification.txt
 

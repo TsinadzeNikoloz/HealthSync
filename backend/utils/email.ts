@@ -198,6 +198,38 @@ class Email {
 		await this.send('Your HealthSync Verification Code', html);
 	}
 
+	async sendContactMessage(senderName: string, senderEmail: string, subject: string, message: string) {
+		const html = this.wrapHtml(`
+			<h1 style="color: #4f46e5;">New Contact Message</h1>
+			<table style="width: 100%; border-collapse: collapse; margin: 24px 0;">
+				<tr>
+					<td style="padding: 12px 16px; background: #f8fafc; border-radius: 8px 8px 0 0; color: #64748b; font-size: 13px; font-weight: 600;">From</td>
+					<td style="padding: 12px 16px; background: #f8fafc; color: #1e293b; font-size: 14px; text-align: right;">${senderName} &lt;${senderEmail}&gt;</td>
+				</tr>
+				<tr>
+					<td style="padding: 12px 16px; color: #64748b; font-size: 13px; font-weight: 600;">Subject</td>
+					<td style="padding: 12px 16px; color: #1e293b; font-size: 14px; text-align: right;">${subject}</td>
+				</tr>
+			</table>
+			<p style="color: #475569; font-size: 15px; line-height: 1.7; white-space: pre-wrap;">${message}</p>
+		`);
+		await this.send(`[Contact] ${subject}`, html);
+	}
+
+	async sendAppointmentReminder(data: AppointmentEmailData) {
+		const html = this.wrapHtml(`
+			<h1 style="color: #4f46e5;">Appointment Reminder</h1>
+			<p style="color: #475569; font-size: 16px; line-height: 1.6;">
+				Hi ${this.firstName}, this is a reminder that you have an appointment scheduled in <strong>24 hours</strong>.
+			</p>
+			${this.appointmentDetailsHtml(data)}
+			<p style="color: #475569; font-size: 14px; line-height: 1.6;">
+				Please make sure to arrive on time. If you need to make any changes, visit your appointments dashboard.
+			</p>
+		`);
+		await this.send(`Reminder: Appointment Tomorrow — ${data.serviceName}`, html);
+	}
+
 	async sendDoctorNewBooking(data: AppointmentEmailData) {
 		const detailsHtml = `
 			<table style="width: 100%; border-collapse: collapse; margin: 24px 0;">

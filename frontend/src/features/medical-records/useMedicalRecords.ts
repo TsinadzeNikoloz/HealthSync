@@ -7,16 +7,19 @@ export function useMedicalRecords() {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
 
+  // SORT
   const sortByRaw = searchParams.get("sortBy") || "createdAt-desc";
   const [field, direction] = sortByRaw.split("-") as [string, "asc" | "desc"];
   const sortBy = { field, direction };
 
+  // PAGINATION
   const page = !searchParams.get("page")
     ? 1
     : Number(searchParams.get("page"));
 
   const search = searchParams.get("search") || "";
 
+  // QUERY
   const {
     data: { data: records, count } = { data: [], count: 0 },
     isPending,
@@ -26,6 +29,7 @@ export function useMedicalRecords() {
     queryFn: () => getMedicalRecords({ sortBy, page, search }),
   });
 
+  // PRE-FETCHING
   const pageCount = Math.ceil(count / PAGE_SIZE);
 
   if (page < pageCount)

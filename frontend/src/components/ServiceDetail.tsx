@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getUserPhotoUrl } from '../utils/helpers';
+import { getUserPhotoUrl, formatCurrency } from '../utils/helpers';
 import { useService } from '../features/services/useService';
 import { useReviews } from '../features/reviews/useReviews';
 import { useCreateReview } from '../features/reviews/useCreateReview';
@@ -21,12 +21,12 @@ const CATEGORY_COLORS: Record<string, string> = {
   SURGERY: 'bg-rose-50 text-rose-600',
 };
 
-const ServiceDetail: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+function ServiceDetail() {
+  const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const { user } = useUser();
-  const { service, isPending } = useService(id!);
-  const { reviews } = useReviews(id);
+  const { service, isPending } = useService(slug!);
+  const { reviews } = useReviews(service?._id);
   const { createReview, isCreating } = useCreateReview();
   const { checkout, isCheckingOut } = useCheckout();
 
@@ -37,7 +37,7 @@ const ServiceDetail: React.FC = () => {
   const { slots, isPending: slotsLoading } = useAvailableSlots(
     bookingData.doctorId || undefined,
     bookingData.date || undefined,
-    id,
+    service?.duration,
   );
 
   const [isReviewing, setIsReviewing] = useState(false);
@@ -46,21 +46,21 @@ const ServiceDetail: React.FC = () => {
 
   const isPatient = user?.role === Role.PATIENT;
 
-  const handleBook = (e: React.FormEvent) => {
+  const handleBook = (e: { preventDefault(): void }) => {
     e.preventDefault();
-    if (!id || !bookingData.doctorId || !bookingData.date || !bookingData.time) return;
+    if (!service?._id || !bookingData.doctorId || !bookingData.date || !bookingData.time) return;
     checkout({
-      serviceId: id,
+      serviceId: service._id,
       doctor: bookingData.doctorId,
       date: `${bookingData.date}T${bookingData.time}:00`,
     });
   };
 
-  const handleReview = (e: React.FormEvent) => {
+  const handleReview = (e: { preventDefault(): void }) => {
     e.preventDefault();
-    if (!id || !reviewText) return;
+    if (!service?._id || !reviewText) return;
     createReview(
-      { review: reviewText, rating: reviewRating, service: id },
+      { review: reviewText, rating: reviewRating, service: service._id },
       { onSuccess: () => { setIsReviewing(false); setReviewText(''); setReviewRating(5); } }
     );
   };
@@ -78,9 +78,6 @@ const ServiceDetail: React.FC = () => {
       <div className="text-center py-24 text-slate-400 font-bold">Service not found.</div>
     );
   }
-
-  const formatCurrency = (n: number) =>
-    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n);
 
   const categoryColor = CATEGORY_COLORS[service.category] || 'bg-slate-50 text-slate-600';
 
@@ -352,6 +349,6 @@ const ServiceDetail: React.FC = () => {
       </Modal>
     </div>
   );
-};
+}
 
 export default ServiceDetail;

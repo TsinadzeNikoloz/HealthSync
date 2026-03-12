@@ -18,7 +18,12 @@ const multerFilter = (
 	if (file.mimetype.startsWith('image')) {
 		cb(null, true);
 	} else {
-		cb(new AppError('Not an image! Please upload only images', 400) as unknown as Error);
+		cb(
+			new AppError(
+				'Not an image! Please upload only images',
+				400,
+			) as unknown as Error,
+		);
 	}
 };
 
@@ -60,24 +65,21 @@ const filterObj = (
 // @route       GET /api/v1/users/doctors
 // @access      Public
 export const getAllDoctors = catchAsync(async (req: Request, res: Response) => {
-	const baseFilter = { role: 'DOCTOR' };
-
-	const countFeatures = new APIFeatures(User.find(baseFilter), req.query)
-		.search(['name', 'email'])
-		.filter();
-	const totalCount = await User.countDocuments(countFeatures.query.getFilter());
-
-	const features = new APIFeatures(User.find(baseFilter), req.query)
-		.search(['name', 'email'])
+	const features = new APIFeatures(
+		User.find({ role: 'DOCTOR' }),
+		req.query,
+	)
+		.search(['name', 'specialty'])
 		.filter()
 		.sort()
-		.limitFields()
 		.paginate();
-	const docs = await features.query;
+
+	const docs = await features.query.select('name email photo specialty availability');
+	const total = await User.countDocuments({ role: 'DOCTOR' });
 
 	res.status(200).json({
 		status: 'success',
-		results: totalCount,
+		results: total,
 		data: { docs },
 	});
 });
@@ -144,10 +146,17 @@ export const updateMe = catchAsync(
 			);
 		}
 
-		const filteredBody = filterObj(req.body, 'name', 'email', 'twoFactorEnabled', 'phone', 'gender', 'dateOfBirth', 'address', 'availability') as Record<
-			string,
-			unknown
-		>;
+		const filteredBody = filterObj(
+			req.body,
+			'name',
+			'email',
+			'twoFactorEnabled',
+			'phone',
+			'gender',
+			'dateOfBirth',
+			'address',
+			'availability',
+		) as Record<string, unknown>;
 		if (req.file) filteredBody.photo = req.file.filename;
 		const updatedUser = await User.findByIdAndUpdate(
 			req.user!.id,
@@ -178,15 +187,12 @@ export const deleteMe = catchAsync(async (req: Request, res: Response) => {
 });
 
 // @desc        Get available time slots for a doctor on a given date
-// @route       GET /api/v1/users/availability/:doctorId?date=YYYY-MM-DD&serviceId=xxx
+// @route       GET /api/v1/users/availability/:doctorId
 // @access      Public
 export const getAvailableSlots = catchAsync(
 	async (req: Request, res: Response, next: NextFunction) => {
 		const { doctorId } = req.params;
-		const { date, serviceId } = req.query as {
-			date?: string;
-			serviceId?: string;
-		};
+		const { date, duration } = req.query as { date?: string; duration?: string };
 
 		if (!date) {
 			return next(new AppError('Please provide a date query parameter', 400));
@@ -212,58 +218,34 @@ export const getAvailableSlots = catchAsync(
 		const window = doctor.availability?.find((a) => a.dayOfWeek === dayOfWeek);
 
 		if (!window) {
-			return res.status(200).json({
-				status: 'success',
-				data: { slots: [] },
-			});
+			return res.status(200).json({ status: 'success', data: { slots: [] } });
 		}
 
-		// Determine slot duration from service (default 30 min)
-		let slotMinutes = 30;
-		if (serviceId) {
-			const service = await Appointment.db
-				.model('Service')
-				.findById(serviceId)
-				.select('duration');
-			if (service?.duration) slotMinutes = service.duration as number;
-		}
-
+		const slotMinutes = duration ? parseInt(duration, 10) : 30;
 		const allSlots = generateSlots(window.startTime, window.endTime, slotMinutes);
 
-		// Fetch existing appointments for this doctor on this date
+		// Get booked start times for this doctor on this date
 		const dayStart = new Date(date);
 		dayStart.setHours(0, 0, 0, 0);
 		const dayEnd = new Date(date);
 		dayEnd.setHours(23, 59, 59, 999);
 
-		const existingAppointments = await Appointment.find({
+		const booked = await Appointment.find({
 			doctor: doctorId,
 			status: { $in: ['PENDING', 'CONFIRMED'] },
 			date: { $gte: dayStart, $lte: dayEnd },
-		}).populate('service', 'duration');
+		}).select('date');
 
-		interface BlockedRange {
-			start: number;
-			end: number;
-		}
-		const blockedRanges: BlockedRange[] = existingAppointments.map((appt) => {
-			const svc = appt.service as unknown as { duration?: number };
-			const dur = (svc?.duration ?? 30) * 60 * 1000;
-			const start = new Date(appt.date).getTime();
-			return { start, end: start + dur };
-		});
+		const bookedTimes = new Set(
+			booked.map((appt) => {
+				const d = new Date(appt.date);
+				return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+			}),
+		);
 
-		const datePrefix = date.slice(0, 10);
-		const availableSlots = allSlots.filter((slot) => {
-			const slotStart = new Date(`${datePrefix}T${slot}:00`).getTime();
-			const slotEnd = slotStart + slotMinutes * 60 * 1000;
-			return !blockedRanges.some((r) => slotStart < r.end && slotEnd > r.start);
-		});
+		const availableSlots = allSlots.filter((slot) => !bookedTimes.has(slot));
 
-		res.status(200).json({
-			status: 'success',
-			data: { slots: availableSlots },
-		});
+		res.status(200).json({ status: 'success', data: { slots: availableSlots } });
 	},
 );
 

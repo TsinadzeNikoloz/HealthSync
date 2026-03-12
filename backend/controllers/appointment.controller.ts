@@ -77,7 +77,7 @@ export const getCheckoutSession = catchAsync(
 			payment_method_types: ['card'],
 			mode: 'payment',
 			success_url: `${process.env.FRONTEND_URL}/checkout-success?${successParams.toString()}`,
-			cancel_url: `${process.env.FRONTEND_URL}/services/${service._id}?canceled=true`,
+			cancel_url: `${process.env.FRONTEND_URL}/services/${service._id}`,
 			customer_email: req.user!.email,
 			client_reference_id: serviceId,
 			metadata: {
@@ -336,9 +336,18 @@ export const updateAppointment = catchAsync(
 					sendEmailSilently(() =>
 						new Email(patient).sendAppointmentCancelled(emailData),
 					);
+					sendEmailSilently(() =>
+						new Email(doctor_).sendAppointmentCancelled(emailData),
+					);
 					createNotification(
 						(patient as unknown as { _id: { toString(): string } })._id.toString(),
 						'Your appointment has been cancelled.',
+						'appointment',
+						'/appointments',
+					);
+					createNotification(
+						(doctor_ as unknown as { _id: { toString(): string } })._id.toString(),
+						`An appointment with ${patient.name} for ${service_.name} has been cancelled.`,
 						'appointment',
 						'/appointments',
 					);
@@ -367,3 +376,68 @@ export const updateAppointment = catchAsync(
 // @route       DELETE /api/v1/appointments/:id
 // @access      Private
 export const deleteAppointment = factory.deleteOne(Appointment);
+
+// @desc        Get appointment statistics (admin only)
+// @route       GET /api/v1/appointments/stats
+// @access      Private/Admin
+export const getAppointmentStats = catchAsync(
+	async (_req: Request, res: Response) => {
+		const sixMonthsAgo = new Date();
+		sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+		const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+		const [byStatus, revenueByMonth, mostBooked] = await Promise.all([
+			// Status breakdown (used for completion/cancellation rate)
+			Appointment.aggregate([
+				{ $group: { _id: '$status', count: { $sum: 1 } } },
+			]),
+			// Monthly revenue from completed appointments (last 6 months)
+			Appointment.aggregate([
+				{ $match: { status: 'COMPLETED', date: { $gte: sixMonthsAgo } } },
+				{
+					$group: {
+						_id: { year: { $year: '$date' }, month: { $month: '$date' } },
+						revenue: { $sum: '$price' },
+					},
+				},
+				{ $sort: { '_id.year': 1, '_id.month': 1 } },
+			]),
+			// Most booked services (top 5)
+			Appointment.aggregate([
+				{ $group: { _id: '$service', count: { $sum: 1 } } },
+				{ $sort: { count: -1 } },
+				{ $limit: 5 },
+				{ $lookup: { from: 'services', localField: '_id', foreignField: '_id', as: 'service' } },
+				{ $unwind: '$service' },
+				{ $project: { name: '$service.name', count: 1, _id: 0 } },
+			]),
+		]);
+
+		const statusMap: Record<string, number> = {};
+		byStatus.forEach((s: { _id: string; count: number }) => { statusMap[s._id] = s.count; });
+		const totalAppointments = Object.values(statusMap).reduce((a, b) => a + b, 0);
+		const totalRevenue = await Appointment.aggregate([
+			{ $match: { status: 'COMPLETED' } },
+			{ $group: { _id: null, total: { $sum: '$price' } } },
+		]).then((r) => r[0]?.total ?? 0);
+
+		res.status(200).json({
+			status: 'success',
+			data: {
+				totalRevenue,
+				totalAppointments,
+				completionRate: totalAppointments
+					? +((( statusMap['COMPLETED'] ?? 0) / totalAppointments) * 100).toFixed(1)
+					: 0,
+				cancellationRate: totalAppointments
+					? +(((statusMap['CANCELLED'] ?? 0) / totalAppointments) * 100).toFixed(1)
+					: 0,
+				revenueByMonth: revenueByMonth.map((d: { _id: { year: number; month: number }; revenue: number }) => ({
+					month: `${MONTHS[d._id.month - 1]} ${d._id.year}`,
+					revenue: Math.round(d.revenue),
+				})),
+				mostBooked: mostBooked as { name: string; count: number }[],
+			},
+		});
+	},
+);

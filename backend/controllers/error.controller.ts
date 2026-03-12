@@ -79,6 +79,8 @@ const globalErrorHandler = (
 		error.message = err.message;
 		error.name = err.name;
 
+		if (error.name === 'CastError') error = handleCastErrorDB(error) as any;
+		if (error.code === 11000) error = handleDuplicateFieldsDB(error) as any;
 		if (error.name === 'ValidationError')
 			error = handleValidationErrorDB(error) as any;
 

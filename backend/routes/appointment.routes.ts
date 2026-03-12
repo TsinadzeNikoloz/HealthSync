@@ -27,6 +27,12 @@ router.get(
 
 router.use(authController.restrictTo('ADMIN', 'DOCTOR'));
 
+router.get(
+	'/stats',
+	authController.restrictTo('ADMIN'),
+	appointmentController.getAppointmentStats,
+);
+
 router
 	.route('/')
 	.get(appointmentController.getAppointments)

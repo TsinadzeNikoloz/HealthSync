@@ -1,4 +1,3 @@
-import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { PAGE_SIZE } from '../../utils/constants';
 
@@ -7,7 +6,7 @@ interface PaginationProps {
   pageSize?: number;
 }
 
-const Pagination: React.FC<PaginationProps> = ({ count, pageSize = PAGE_SIZE }) => {
+export default function Pagination({ count, pageSize = PAGE_SIZE }: PaginationProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = !searchParams.get('page') ? 1 : Number(searchParams.get('page'));
   const pageCount = Math.ceil(count / pageSize);
@@ -61,6 +60,4 @@ const Pagination: React.FC<PaginationProps> = ({ count, pageSize = PAGE_SIZE }) 
       </div>
     </div>
   );
-};
-
-export default Pagination;
+}

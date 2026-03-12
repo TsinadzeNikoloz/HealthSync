@@ -39,7 +39,6 @@ const PatientRecords = React.lazy(() => import('./components/PatientRecords'));
 const AccountSettings = React.lazy(
 	() => import('./components/AccountSettings'),
 );
-const Operations = React.lazy(() => import('./components/Operations'));
 const AboutUs = React.lazy(() => import('./components/AboutUs'));
 
 const queryClient = new QueryClient({
@@ -174,7 +173,7 @@ export default function App() {
 						<Route element={<PublicLayout />}>
 							<Route index element={<Navigate to="/services" replace />} />
 							<Route path="/services" element={<PatientServices />} />
-							<Route path="/services/:id" element={<ServiceDetail />} />
+							<Route path="/services/:slug" element={<ServiceDetail />} />
 							<Route path="/about" element={<AboutUs />} />
 						</Route>
 
@@ -195,7 +194,6 @@ export default function App() {
 							<Route path="/medical-records" element={<MedicalRecords />} />
 							<Route path="/patients" element={<PatientRecords />} />
 							<Route path="/settings" element={<AccountSettings />} />
-							<Route path="/operations" element={<Operations />} />
 							<Route path="/checkout-success" element={<CheckoutSuccess />} />
 							<Route path="*" element={<Navigate to="/services" replace />} />
 						</Route>

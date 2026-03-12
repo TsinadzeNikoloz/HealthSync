@@ -14,23 +14,26 @@ export function useAppointments() {
 
   const isPatient = user?.role === "USER";
 
+  // FILTER
   const filterValue = searchParams.get("status");
   const filter =
     !filterValue || filterValue === "all"
       ? null
       : { field: "status", value: filterValue };
 
+  // SORT
   const sortByRaw = searchParams.get("sortBy") || "date-desc";
   const [field, direction] = sortByRaw.split("-") as [string, "asc" | "desc"];
   const sortBy = { field, direction };
 
+  // PAGINATION
   const page = !searchParams.get("page")
     ? 1
     : Number(searchParams.get("page"));
 
   const search = searchParams.get("search") || "";
 
-  // Patients use /my-appointments, staff use /appointments
+  // QUERY — patients use /my-appointments, staff use /appointments
   const {
     data: { data: appointments, count } = { data: [], count: 0 },
     isPending,
@@ -44,6 +47,7 @@ export function useAppointments() {
       : () => getAppointments({ filter, sortBy, page, search }),
   });
 
+  // PRE-FETCHING
   const pageCount = Math.ceil(count / PAGE_SIZE);
 
   if (page < pageCount)

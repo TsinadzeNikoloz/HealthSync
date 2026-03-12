@@ -2,6 +2,7 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IService extends Document {
 	name: string;
+	slug: string;
 	duration: number;
 	maxPatients: number;
 	category: 'CONSULTATION' | 'TREATMENT' | 'DIAGNOSTIC' | 'THERAPY' | 'SURGERY';
@@ -34,6 +35,10 @@ const serviceSchema = new Schema<IService>(
 				5,
 				'A service name must have greater than or equal to 5 characters',
 			],
+		},
+		slug: {
+			type: String,
+			unique: true,
 		},
 		duration: {
 			type: Number,
@@ -113,6 +118,17 @@ const serviceSchema = new Schema<IService>(
 		toObject: { virtuals: true },
 	},
 );
+
+serviceSchema.pre('save', function (next) {
+	if (this.isModified('name') || !this.slug) {
+		this.slug = this.name
+			.toLowerCase()
+			.trim()
+			.replace(/\s+/g, '-')
+			.replace(/[^a-z0-9-]/g, '');
+	}
+	next();
+});
 
 serviceSchema.index({ price: 1, ratingsAverage: -1 });
 serviceSchema.index({ category: 1 });

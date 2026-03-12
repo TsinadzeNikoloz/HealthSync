@@ -1,5 +1,4 @@
 
-import React from 'react';
 import { MedicalRecord } from '../../types';
 import { generateMedicalRecordPDF } from '../../utils/generateMedicalRecordPDF';
 
@@ -9,7 +8,7 @@ interface MedicalRecordCardProps {
   showTimelineDot?: boolean;
 }
 
-const MedicalRecordCard: React.FC<MedicalRecordCardProps> = ({ record, doctor, showTimelineDot = true }) => {
+function MedicalRecordCard({ record, doctor, showTimelineDot = true }: MedicalRecordCardProps) {
   return (
     <div className="relative pl-0 md:pl-20 group">
       {/* Timeline Connector (Hidden on mobile for better space usage) */}
@@ -75,6 +74,6 @@ const MedicalRecordCard: React.FC<MedicalRecordCardProps> = ({ record, doctor, s
       </div>
     </div>
   );
-};
+}
 
 export default MedicalRecordCard;

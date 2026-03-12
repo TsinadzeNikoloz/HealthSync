@@ -4,6 +4,7 @@ dotenv.config({ path: './config.env' });
 import chalk from 'chalk';
 import mongoose from 'mongoose';
 import app from './app.js';
+import { startScheduler } from './utils/scheduler.js';
 
 process.on('uncaughtException', (err) => {
 	console.log(chalk.bold.redBright('Uncaught Exception! Shutting Down...'));
@@ -20,6 +21,7 @@ mongoose
 	.connect(DB)
 	.then(() => {
 		console.log(chalk.bold.cyanBright('DATABASE connection successful..'));
+		startScheduler();
 	})
 	.catch((err: Error) => {
 		console.log(chalk.bold.redBright('DATABASE connection failed!'));

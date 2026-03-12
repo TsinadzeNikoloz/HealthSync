@@ -28,10 +28,7 @@ export const getMedicalRecords = catchAsync(
 			countFeatures.query.getFilter(),
 		);
 
-		const features = new APIFeatures(
-			MedicalRecord.find(baseFilter),
-			req.query,
-		)
+		const features = new APIFeatures(MedicalRecord.find(baseFilter), req.query)
 			.search(['diagnosis'])
 			.filter()
 			.sort()
@@ -117,9 +114,7 @@ export const updateMedicalRecord = catchAsync(
 		);
 
 		if (!medicalRecord) {
-			return next(
-				new AppError('No medical record found with that ID', 404),
-			);
+			return next(new AppError('No medical record found with that ID', 404));
 		}
 
 		res.status(200).json({
@@ -166,10 +161,7 @@ export const getMedicalRecordByAppointment = catchAsync(
 
 		if (!medicalRecord) {
 			return next(
-				new AppError(
-					'No medical record found for this appointment',
-					404,
-				),
+				new AppError('No medical record found for this appointment', 404),
 			);
 		}
 
