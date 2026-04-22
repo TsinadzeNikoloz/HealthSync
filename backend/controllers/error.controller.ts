@@ -19,14 +19,11 @@ const handleCastErrorDB = (err: MongoError) => {
 };
 
 const handleDuplicateFieldsDB = (err: MongoError) => {
-	let value: unknown;
-	if (err.keyValue) {
-		value = Object.values(err.keyValue)[0];
-	} else if (err.errmsg) {
-		const match = err.errmsg.match(/(["'])(.*?)\1/);
-		value = match ? match[2] : 'duplicate field';
+	const field = err.keyValue ? Object.keys(err.keyValue)[0] : null;
+	let message = 'An account with these details already exists. Please try another.';
+	if (field === 'email') {
+		message = 'An account with this email already exists. Please log in or use a different email.';
 	}
-	const message = `Duplicate Field Value: ${value}. Please use another value`;
 	return new AppError(message, 400);
 };
 

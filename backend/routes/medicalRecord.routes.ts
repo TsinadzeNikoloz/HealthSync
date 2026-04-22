@@ -31,8 +31,14 @@ router
 
 router
 	.route('/:id')
-	.get(authController.restrictTo('ADMIN', 'DOCTOR'), medicalRecordController.getMedicalRecord)
-	.patch(authController.restrictTo('ADMIN', 'DOCTOR'), medicalRecordController.updateMedicalRecord)
+	.get(
+		authController.restrictTo('ADMIN', 'DOCTOR'),
+		medicalRecordController.getMedicalRecord,
+	)
+	.patch(
+		authController.restrictTo('ADMIN', 'DOCTOR'),
+		medicalRecordController.updateMedicalRecord,
+	)
 	.delete(
 		authController.restrictTo('ADMIN'),
 		medicalRecordController.deleteMedicalRecord,

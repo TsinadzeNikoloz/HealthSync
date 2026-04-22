@@ -134,7 +134,7 @@ export const createAppointmentFromParams = catchAsync(
 			return res.status(200).json({
 				status: 'success',
 				message: 'Appointment already exists',
-				data: { appointment: existingAppointment },
+				data: { doc: existingAppointment },
 			});
 		}
 
@@ -151,7 +151,7 @@ export const createAppointmentFromParams = catchAsync(
 		// Respond immediately — don't block on email sending
 		res.status(201).json({
 			status: 'success',
-			data: { appointment },
+			data: { doc: appointment },
 		});
 
 		// Notify patient in-app
@@ -219,10 +219,16 @@ export const getMyAppointments = catchAsync(
 
 		const totalCount = await Appointment.countDocuments(baseFilter);
 
+		const allowedSortFields = ['date', 'price', 'status', 'createdAt'];
+		const rawSort = String(req.query.sort ?? '');
+		const sortField = rawSort.replace(/^-/, '');
+		const sortQuery =
+			rawSort && allowedSortFields.includes(sortField) ? rawSort : '-date';
+
 		const appointments = await Appointment.find(baseFilter)
 			.populate('service', 'name category duration imageCover')
 			.populate('doctor', 'name email photo')
-			.sort('-date')
+			.sort(sortQuery)
 			.skip(skip)
 			.limit(limit);
 
@@ -367,7 +373,7 @@ export const updateAppointment = catchAsync(
 
 		res.status(200).json({
 			status: 'success',
-			data: { data: doc },
+			data: { doc },
 		});
 	},
 );

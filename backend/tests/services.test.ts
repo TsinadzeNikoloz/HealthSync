@@ -21,7 +21,6 @@ async function getAdminToken(): Promise<string> {
 const validService = {
 	name: 'General Checkup',
 	duration: 30,
-	maxPatients: 10,
 	category: 'CONSULTATION',
 	price: 50,
 	summary: 'A routine general health checkup for all patients.',
@@ -54,7 +53,7 @@ describe('Services - Admin CRUD', () => {
 			.send(validService);
 
 		expect(res.status).toBe(201);
-		expect(res.body.data.data.slug).toBe('general-checkup');
+		expect(res.body.data.doc.slug).toBe('general-checkup');
 	});
 
 	it('fetches a service by slug', async () => {

@@ -76,7 +76,7 @@ class Email {
 				</tr>
 				<tr>
 					<td style="padding: 12px 16px; border-radius: 0 0 8px 8px; color: #64748b; font-size: 13px; font-weight: 600;">Amount Paid</td>
-					<td style="padding: 12px 16px; border-radius: 0 0 8px 8px; color: #4f46e5; font-size: 14px; font-weight: 700; text-align: right;">€${data.price.toFixed(2)}</td>
+					<td style="padding: 12px 16px; border-radius: 0 0 8px 8px; color: #2563eb; font-size: 14px; font-weight: 700; text-align: right;">€${data.price.toFixed(2)}</td>
 				</tr>
 			</table>
 		`;
@@ -94,7 +94,7 @@ class Email {
 
 	async sendWelcome() {
 		const html = this.wrapHtml(`
-			<h1 style="color: #4f46e5;">Welcome to HealthSync, ${this.firstName}!</h1>
+			<h1 style="color: #2563eb;">Welcome to HealthSync, ${this.firstName}!</h1>
 			<p style="color: #475569; font-size: 16px; line-height: 1.6;">
 				We're excited to have you on board. Your account has been created successfully.
 			</p>
@@ -104,12 +104,12 @@ class Email {
 
 	async sendPasswordReset() {
 		const html = this.wrapHtml(`
-			<h1 style="color: #4f46e5;">Password Reset</h1>
+			<h1 style="color: #2563eb;">Password Reset</h1>
 			<p style="color: #475569; font-size: 16px; line-height: 1.6;">
 				Hi ${this.firstName}, you requested a password reset. Click the button below to set a new password.
 			</p>
 			<div style="text-align: center; margin: 32px 0;">
-				<a href="${this.url}" style="background-color: #4f46e5; color: white; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 16px; display: inline-block;">
+				<a href="${this.url}" style="background-color: #2563eb; color: white; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 16px; display: inline-block;">
 					Reset Password
 				</a>
 			</div>
@@ -117,7 +117,7 @@ class Email {
 				If you didn't request this, please ignore this email. This link is valid for 10 minutes.
 			</p>
 			<p style="color: #94a3b8; font-size: 13px;">
-				Or copy this link: <a href="${this.url}" style="color: #4f46e5;">${this.url}</a>
+				Or copy this link: <a href="${this.url}" style="color: #2563eb;">${this.url}</a>
 			</p>
 		`);
 		await this.send(
@@ -128,7 +128,7 @@ class Email {
 
 	async sendBookingConfirmation(data: AppointmentEmailData) {
 		const html = this.wrapHtml(`
-			<h1 style="color: #4f46e5;">Booking Confirmed!</h1>
+			<h1 style="color: #2563eb;">Booking Confirmed!</h1>
 			<p style="color: #475569; font-size: 16px; line-height: 1.6;">
 				Hi ${this.firstName}, your appointment has been booked successfully. Here are the details:
 			</p>
@@ -142,7 +142,7 @@ class Email {
 
 	async sendAppointmentConfirmed(data: AppointmentEmailData) {
 		const html = this.wrapHtml(`
-			<h1 style="color: #4f46e5;">Appointment Confirmed</h1>
+			<h1 style="color: #2563eb;">Appointment Confirmed</h1>
 			<p style="color: #475569; font-size: 16px; line-height: 1.6;">
 				Hi ${this.firstName}, great news! Your appointment has been <strong style="color: #22c55e;">confirmed</strong> by your doctor.
 			</p>
@@ -170,7 +170,7 @@ class Email {
 
 	async sendAppointmentCompleted(data: AppointmentEmailData) {
 		const html = this.wrapHtml(`
-			<h1 style="color: #4f46e5;">Appointment Completed</h1>
+			<h1 style="color: #2563eb;">Appointment Completed</h1>
 			<p style="color: #475569; font-size: 16px; line-height: 1.6;">
 				Hi ${this.firstName}, your appointment has been marked as <strong style="color: #22c55e;">completed</strong>. We hope everything went well!
 			</p>
@@ -184,7 +184,7 @@ class Email {
 
 	async sendOTP(code: string) {
 		const html = this.wrapHtml(`
-			<h1 style="color: #4f46e5;">Verification Code</h1>
+			<h1 style="color: #2563eb;">Verification Code</h1>
 			<p style="color: #475569; font-size: 16px; line-height: 1.6;">
 				Hi ${this.firstName}, use the code below to complete your login.
 			</p>
@@ -200,7 +200,7 @@ class Email {
 
 	async sendContactMessage(senderName: string, senderEmail: string, subject: string, message: string) {
 		const html = this.wrapHtml(`
-			<h1 style="color: #4f46e5;">New Contact Message</h1>
+			<h1 style="color: #2563eb;">New Contact Message</h1>
 			<table style="width: 100%; border-collapse: collapse; margin: 24px 0;">
 				<tr>
 					<td style="padding: 12px 16px; background: #f8fafc; border-radius: 8px 8px 0 0; color: #64748b; font-size: 13px; font-weight: 600;">From</td>
@@ -218,7 +218,7 @@ class Email {
 
 	async sendAppointmentReminder(data: AppointmentEmailData) {
 		const html = this.wrapHtml(`
-			<h1 style="color: #4f46e5;">Appointment Reminder</h1>
+			<h1 style="color: #2563eb;">Appointment Reminder</h1>
 			<p style="color: #475569; font-size: 16px; line-height: 1.6;">
 				Hi ${this.firstName}, this is a reminder that you have an appointment scheduled in <strong>24 hours</strong>.
 			</p>
@@ -248,7 +248,7 @@ class Email {
 			</table>
 		`;
 		const html = this.wrapHtml(`
-			<h1 style="color: #4f46e5;">New Appointment Booked</h1>
+			<h1 style="color: #2563eb;">New Appointment Booked</h1>
 			<p style="color: #475569; font-size: 16px; line-height: 1.6;">
 				Hi Dr. ${this.firstName}, a new appointment has been booked with you.
 			</p>

@@ -13,33 +13,27 @@ import { Toaster } from 'react-hot-toast';
 import { useUser } from './features/authentication/useUser';
 import { useLogout } from './features/authentication/useLogout';
 
-import Header from './components/Header';
-import Sidebar from './components/Sidebar';
+import Header from './ui/Header';
+import Sidebar from './ui/Sidebar';
+import Spinner from './ui/Spinner';
+import ErrorBoundary from './pages/ErrorBoundary';
 
-const Auth = React.lazy(() => import('./components/Auth'));
-const ForgotPassword = React.lazy(() => import('./components/ForgotPassword'));
-const ResetPassword = React.lazy(() => import('./components/ResetPassword'));
-const PatientDashboard = React.lazy(
-	() => import('./components/PatientDashboard'),
-);
-const DoctorDashboard = React.lazy(
-	() => import('./components/DoctorDashboard'),
-);
-const AdminDashboard = React.lazy(() => import('./components/AdminDashboard'));
-const Appointments = React.lazy(() => import('./components/Appointments'));
-const PatientServices = React.lazy(
-	() => import('./components/PatientServices'),
-);
-const ServiceDetail = React.lazy(() => import('./components/ServiceDetail'));
-const CheckoutSuccess = React.lazy(
-	() => import('./components/CheckoutSuccess'),
-);
-const MedicalRecords = React.lazy(() => import('./components/MedicalRecords'));
-const PatientRecords = React.lazy(() => import('./components/PatientRecords'));
-const AccountSettings = React.lazy(
-	() => import('./components/AccountSettings'),
-);
-const AboutUs = React.lazy(() => import('./components/AboutUs'));
+const Login = React.lazy(() => import('./pages/Login'));
+const Signup = React.lazy(() => import('./pages/Signup'));
+const ForgotPassword = React.lazy(() => import('./pages/ForgotPassword'));
+const ResetPassword = React.lazy(() => import('./pages/ResetPassword'));
+const PatientDashboard = React.lazy(() => import('./pages/PatientDashboard'));
+const DoctorDashboard = React.lazy(() => import('./pages/DoctorDashboard'));
+const AdminDashboard = React.lazy(() => import('./pages/AdminDashboard'));
+const Appointments = React.lazy(() => import('./pages/Appointments'));
+const ServicesPage = React.lazy(() => import('./pages/Services'));
+const ServiceDetail = React.lazy(() => import('./pages/ServiceDetail'));
+const CheckoutSuccess = React.lazy(() => import('./pages/CheckoutSuccess'));
+const MedicalRecords = React.lazy(() => import('./pages/MedicalRecords'));
+const UserManagement = React.lazy(() => import('./pages/UserManagement'));
+const AccountSettings = React.lazy(() => import('./pages/AccountSettings'));
+const AboutUs = React.lazy(() => import('./pages/AboutUs'));
+const NotFound = React.lazy(() => import('./ui/NotFound'));
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -57,10 +51,10 @@ const PAGE_TITLES: Record<string, string> = {
 	'/medical-records': 'Medical Records',
 	'/patients': 'Patient Records',
 	'/settings': 'Account Settings',
-	'/operations': 'Operations',
 	'/about': 'About',
 	'/checkout-success': 'Booking Confirmed',
 	'/login': 'Login',
+	'/signup': 'Sign Up',
 	'/forgot-password': 'Forgot Password',
 };
 
@@ -79,13 +73,7 @@ function PublicLayout() {
 	const { logout } = useLogout();
 	const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
 
-	if (isPending) {
-		return (
-			<div className="h-screen flex items-center justify-center bg-slate-50">
-				<div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-			</div>
-		);
-	}
+	if (isPending) return <Spinner fullscreen />;
 
 	return (
 		<div className="flex h-screen bg-slate-50 font-['Plus_Jakarta_Sans']">
@@ -96,7 +84,7 @@ function PublicLayout() {
 				onClose={() => setIsSidebarOpen(false)}
 				guest={!user}
 			/>
-			<div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+			<div className="flex min-w-0 flex-1 flex-col overflow-hidden">
 				<Header
 					user={user ?? null}
 					onMenuToggle={() => setIsSidebarOpen((o) => !o)}
@@ -114,13 +102,7 @@ function AppLayout() {
 	const { logout } = useLogout();
 	const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
 
-	if (isPending) {
-		return (
-			<div className="h-screen flex items-center justify-center bg-slate-50">
-				<div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-			</div>
-		);
-	}
+	if (isPending) return <Spinner fullscreen />;
 
 	if (!user) return <Navigate to="/login" replace />;
 
@@ -132,7 +114,7 @@ function AppLayout() {
 				isOpen={isSidebarOpen}
 				onClose={() => setIsSidebarOpen(false)}
 			/>
-			<div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+			<div className="flex min-w-0 flex-1 flex-col overflow-hidden">
 				<Header user={user} onMenuToggle={() => setIsSidebarOpen((o) => !o)} />
 				<main className="flex-1 overflow-y-auto p-8 lg:p-10">
 					<Outlet />
@@ -155,50 +137,50 @@ function GuestRoute() {
 	if (user) return <Navigate to="/dashboard" replace />;
 	return <Outlet />;
 }
-
+// I used AI here for generating this code
 export default function App() {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<BrowserRouter>
 				<TitleManager />
-				<React.Suspense
-					fallback={
-						<div className="h-screen flex items-center justify-center bg-slate-50">
-							<div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-						</div>
-					}
-				>
-					<Routes>
-						{/* Public routes — guest shell or full shell depending on auth */}
-						<Route element={<PublicLayout />}>
-							<Route index element={<Navigate to="/services" replace />} />
-							<Route path="/services" element={<PatientServices />} />
-							<Route path="/services/:slug" element={<ServiceDetail />} />
-							<Route path="/about" element={<AboutUs />} />
-						</Route>
+				<ErrorBoundary>
+					<React.Suspense fallback={<Spinner fullscreen />}>
+						<Routes>
+							{/* Public routes */}
+							<Route element={<PublicLayout />}>
+								<Route index element={<Navigate to="/services" replace />} />
+								<Route path="/services" element={<ServicesPage />} />
+								<Route path="/services/:slug" element={<ServiceDetail />} />
+								<Route path="/about" element={<AboutUs />} />
+							</Route>
 
-						{/* Guest-only routes */}
-						<Route element={<GuestRoute />}>
-							<Route path="/login" element={<Auth />} />
-							<Route path="/forgot-password" element={<ForgotPassword />} />
+							{/* Guest-only routes */}
+							<Route element={<GuestRoute />}>
+								<Route path="/login" element={<Login />} />
+								<Route path="/signup" element={<Signup />} />
+								<Route path="/forgot-password" element={<ForgotPassword />} />
+							</Route>
+
+							{/* Accessible regardless of auth */}
 							<Route
 								path="/reset-password/:token"
 								element={<ResetPassword />}
 							/>
-						</Route>
 
-						{/* Protected routes */}
-						<Route element={<AppLayout />}>
-							<Route path="/dashboard" element={<Dashboard />} />
-							<Route path="/appointments" element={<Appointments />} />
-							<Route path="/medical-records" element={<MedicalRecords />} />
-							<Route path="/patients" element={<PatientRecords />} />
-							<Route path="/settings" element={<AccountSettings />} />
-							<Route path="/checkout-success" element={<CheckoutSuccess />} />
-							<Route path="*" element={<Navigate to="/services" replace />} />
-						</Route>
-					</Routes>
-				</React.Suspense>
+							{/* Protected routes */}
+							<Route element={<AppLayout />}>
+								<Route path="/dashboard" element={<Dashboard />} />
+								<Route path="/appointments" element={<Appointments />} />
+								<Route path="/medical-records" element={<MedicalRecords />} />
+								<Route path="/patients" element={<UserManagement />} />
+								<Route path="/settings" element={<AccountSettings />} />
+								<Route path="/checkout-success" element={<CheckoutSuccess />} />
+							</Route>
+
+							<Route path="*" element={<NotFound />} />
+						</Routes>
+					</React.Suspense>
+				</ErrorBoundary>
 			</BrowserRouter>
 			<Toaster
 				position="top-center"

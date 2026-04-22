@@ -16,8 +16,8 @@ export function useResetPassword() {
 	const { mutate: resetPassword, isPending } = useMutation({
 		mutationFn: ({ token, password, passwordConfirm }: ResetPasswordData) =>
 			resetPasswordApi(token, password, passwordConfirm),
-		onSuccess: (data) => {
-			queryClient.setQueryData(['user'], data.data.user);
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['user'] });
 			toast.success('Password reset! Welcome back.');
 			navigate('/dashboard', { replace: true });
 		},

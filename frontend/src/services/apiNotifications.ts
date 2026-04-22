@@ -1,35 +1,15 @@
-import { API_URL } from "../utils/constants";
-import { getAuthHeaders } from "../utils/helpers";
-import type { Notification } from "../types";
+import apiClient from './apiClient';
+import type { Notification } from '../types';
 
 export async function getNotifications(): Promise<Notification[]> {
-  const res = await fetch(`${API_URL}/notifications`, {
-    method: "GET",
-    credentials: "include",
-    headers: getAuthHeaders(),
-  });
-
-  const data = await res.json();
-
-  if (data.status !== "success") {
-    throw new Error(data.message);
-  }
-
-  return data.data.notifications as Notification[];
+	const { data } = await apiClient.get('/notifications');
+	return data.data.docs as Notification[];
 }
 
 export async function markNotificationRead(id: string): Promise<void> {
-  await fetch(`${API_URL}/notifications/${id}/read`, {
-    method: "PATCH",
-    credentials: "include",
-    headers: getAuthHeaders(),
-  });
+	await apiClient.patch(`/notifications/${id}/read`);
 }
 
 export async function markAllNotificationsRead(): Promise<void> {
-  await fetch(`${API_URL}/notifications/read-all`, {
-    method: "PATCH",
-    credentials: "include",
-    headers: getAuthHeaders(),
-  });
+	await apiClient.patch('/notifications/read-all');
 }

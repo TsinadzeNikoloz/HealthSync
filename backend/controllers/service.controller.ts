@@ -26,41 +26,20 @@ const upload = multer({
 	fileFilter: multerFilter,
 });
 
-export const uploadServiceImages = upload.fields([
-	{ name: 'imageCover', maxCount: 1 },
-	{ name: 'images', maxCount: 3 },
-]);
+export const uploadServiceImage = upload.single('imageCover');
 
-export const resizeServiceImages = catchAsync(
+export const resizeServiceImage = catchAsync(
 	async (req: Request, _res: Response, next: NextFunction) => {
-		const files = req.files as {
-			[fieldname: string]: Express.Multer.File[];
-		};
-		if (!files.imageCover || !files.images) return next();
+		if (!req.file) return next();
 
-		// 1) Cover image
-		req.body.imageCover = `service-${req.params.id}-${Date.now()}-cover.jpeg`;
-		await sharp(files.imageCover[0].buffer)
+		const id = req.params.id ?? new mongoose.Types.ObjectId().toString();
+		req.body.imageCover = `service-${id}-${Date.now()}-cover.jpeg`;
+
+		await sharp(req.file.buffer)
 			.resize(2000, 1333)
 			.toFormat('jpeg')
 			.jpeg({ quality: 90 })
 			.toFile(`public/img/services/${req.body.imageCover}`);
-
-		// 2) Images
-		req.body.images = [];
-		await Promise.all(
-			files.images.map(async (file, i) => {
-				const filename = `service-${req.params.id}-${Date.now()}-${i + 1}.jpeg`;
-
-				await sharp(file.buffer)
-					.resize(2000, 1333)
-					.toFormat('jpeg')
-					.jpeg({ quality: 90 })
-					.toFile(`public/img/services/${filename}`);
-
-				req.body.images.push(filename);
-			}),
-		);
 
 		next();
 	},
@@ -87,7 +66,7 @@ export const getAllServices = factory.getAll(Service);
 // @access      Public
 export const getService = catchAsync(
 	async (req: Request, res: Response, next: NextFunction) => {
-		const { id } = req.params;
+		const id = req.params.id as string;
 		const query = mongoose.Types.ObjectId.isValid(id)
 			? Service.findById(id)
 			: Service.findOne({ slug: id });

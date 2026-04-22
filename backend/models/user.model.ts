@@ -18,8 +18,6 @@ export interface IUser extends Document {
 	dateOfBirth?: Date;
 	address?: string;
 	role: 'USER' | 'DOCTOR' | 'ADMIN';
-	specialty?: string;
-	bio?: string;
 	password: string;
 	passwordConfirm: string | undefined;
 	passwordChangedAt?: Date;
@@ -47,8 +45,8 @@ const userSchema = new Schema<IUser, IUserModel>(
 			type: String,
 			required: [true, 'Please enter your name'],
 			trim: true,
-			minLength: 3,
-			maxLength: 40,
+			minLength: [3, 'Name must be at least 3 characters'],
+			maxLength: [40, 'Name cannot exceed 40 characters'],
 		},
 		email: {
 			type: String,
@@ -61,7 +59,11 @@ const userSchema = new Schema<IUser, IUserModel>(
 			type: String,
 			trim: true,
 			validate: {
-				validator: (v: string) => !v || validator.isMobilePhone(v),
+				validator: (v: string) =>
+					!v ||
+					validator.isMobilePhone(v.replace(/\s/g, ''), 'any', {
+						strictMode: false,
+					}),
 				message: 'Please provide a valid phone number',
 			},
 		},
@@ -84,15 +86,7 @@ const userSchema = new Schema<IUser, IUserModel>(
 			enum: ['USER', 'DOCTOR', 'ADMIN'],
 			default: 'USER',
 		},
-		specialty: {
-			type: String,
-			trim: true,
-		},
-		bio: {
-			type: String,
-			trim: true,
-			maxLength: 500,
-		},
+
 		password: {
 			type: String,
 			required: [true, 'Please enter a password'],

@@ -19,6 +19,7 @@ export function useLogin() {
 				return;
 			}
 			queryClient.setQueryData(['user'], data.user);
+			toast.success('Logged in successfully');
 			navigate('/dashboard', { replace: true });
 		},
 		onError: (err: Error) => {

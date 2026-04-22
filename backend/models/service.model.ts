@@ -4,7 +4,6 @@ export interface IService extends Document {
 	name: string;
 	slug: string;
 	duration: number;
-	maxPatients: number;
 	category: 'CONSULTATION' | 'TREATMENT' | 'DIAGNOSTIC' | 'THERAPY' | 'SURGERY';
 	ratingsAverage: number;
 	ratingsQuantity: number;
@@ -13,7 +12,6 @@ export interface IService extends Document {
 	summary: string;
 	description?: string;
 	imageCover: string;
-	images: string[];
 	doctors: mongoose.Types.ObjectId[];
 	isActive: boolean;
 	createdAt: Date;
@@ -43,10 +41,6 @@ const serviceSchema = new Schema<IService>(
 		duration: {
 			type: Number,
 			required: [true, 'A service must have a duration'],
-		},
-		maxPatients: {
-			type: Number,
-			required: [true, 'A service must have a patient amount'],
 		},
 		category: {
 			type: String,
@@ -100,7 +94,6 @@ const serviceSchema = new Schema<IService>(
 			type: String,
 			required: [true, 'A service must have a cover image'],
 		},
-		images: [String],
 		doctors: [
 			{
 				type: Schema.ObjectId,

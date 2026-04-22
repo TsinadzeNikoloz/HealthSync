@@ -1,6 +1,7 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 import express from 'express';
+import cors from 'cors';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
@@ -27,6 +28,14 @@ const app = express();
 // 1) Global Middlewares
 // Serving Static Files
 app.use(express.static(path.join(__dirname, 'public')));
+
+// CORS
+app.use(
+	cors({
+		origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+		credentials: true,
+	}),
+);
 
 // Set security HTTP headers
 if (process.env.NODE_ENV === 'production') {

@@ -67,7 +67,7 @@ describe('Auth - Login', () => {
 	});
 });
 
-describe('Auth — Protected routes', () => {
+describe('Auth - Protected routes', () => {
 	it('blocks access to protected route without token', async () => {
 		const res = await request(app).get('/api/v1/appointments');
 

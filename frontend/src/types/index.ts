@@ -60,7 +60,6 @@ export interface Service {
 	name: string;
 	slug: string;
 	duration: number;
-	maxPatients: number;
 	category: ServiceCategory;
 	ratingsAverage: number;
 	ratingsQuantity: number;
@@ -156,7 +155,6 @@ export interface CreateAppointmentFormData {
 export interface CreateServiceFormData {
 	name: string;
 	duration: number;
-	maxPatients: number;
 	category: ServiceCategory;
 	price: number;
 	priceDiscount?: number;
@@ -179,6 +177,29 @@ export interface CreateReviewFormData {
 	review: string;
 	rating: number;
 	service: string;
+}
+
+export interface CreateUserFormData {
+	name: string;
+	email: string;
+	password: string;
+	passwordConfirm: string;
+	role?: UserRole;
+	phone?: string;
+	gender?: 'male' | 'female' | 'other';
+	dateOfBirth?: string;
+	address?: string;
+	specialty?: string;
+}
+
+export interface ServiceStat {
+	_id: string;
+	numServices: number;
+	numRatings: number;
+	avgRating: number;
+	avgPrice: number;
+	minPrice: number;
+	maxPrice: number;
 }
 
 // === COMPAT EXPORTS (mock→real migration) ===

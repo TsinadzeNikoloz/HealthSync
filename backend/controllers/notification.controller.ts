@@ -25,7 +25,7 @@ export const getMyNotifications = catchAsync(
 		res.status(200).json({
 			status: 'success',
 			results: notifications.length,
-			data: { notifications },
+			data: { docs: notifications },
 		});
 	},
 );

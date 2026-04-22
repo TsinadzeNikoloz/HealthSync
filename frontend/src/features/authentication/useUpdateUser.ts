@@ -12,7 +12,6 @@ export function useUpdateUser() {
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (err: Error) => {
-      console.error("ERROR", err);
       toast.error(err.message || "Failed to update user data");
     },
   });

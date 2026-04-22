@@ -3,7 +3,6 @@
 		"_id": "5c88fa8cf4afda39709c295a",
 		"name": "General Consultation",
 		"duration": 30,
-		"maxPatients": 20,
 		"category": "CONSULTATION",
 		"ratingsAverage": 4.7,
 		"ratingsQuantity": 5,
@@ -20,7 +19,6 @@
 		"_id": "5c88fa8cf4afda39709c295b",
 		"name": "Dental Cleaning",
 		"duration": 45,
-		"maxPatients": 15,
 		"category": "TREATMENT",
 		"ratingsAverage": 4.5,
 		"ratingsQuantity": 4,
@@ -36,7 +34,6 @@
 		"_id": "5c88fa8cf4afda39709c295c",
 		"name": "Complete Blood Test",
 		"duration": 15,
-		"maxPatients": 40,
 		"category": "DIAGNOSTIC",
 		"ratingsAverage": 4.8,
 		"ratingsQuantity": 6,
@@ -46,14 +43,14 @@
 		"imageCover": "https://images.unsplash.com/photo-1579154204601-01588f351e67?w=800&q=80",
 		"doctors": [
 			"5c8a1f292f8fb814b56fa184",
-			"5c8a23412f8fb814b56fa18c"
+			"5c8a23412f8fb814b56fa18c",
+			"5c8a2d412f8fb814b56fa202"
 		]
 	},
 	{
 		"_id": "5c88fa8cf4afda39709c295d",
 		"name": "Physical Therapy Session",
 		"duration": 60,
-		"maxPatients": 10,
 		"category": "THERAPY",
 		"ratingsAverage": 4.9,
 		"ratingsQuantity": 3,
@@ -62,14 +59,14 @@
 		"description": "Each session is customized to your specific condition, whether you are recovering from surgery, managing chronic pain, or rehabilitating from an injury. Our therapists use evidence-based techniques including manual therapy, therapeutic exercises, and modalities.",
 		"imageCover": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=80",
 		"doctors": [
-			"5c8a23412f8fb814b56fa18c"
+			"5c8a23412f8fb814b56fa18c",
+			"5c8a2d412f8fb814b56fa201"
 		]
 	},
 	{
 		"_id": "5c88fa8cf4afda39709c295e",
 		"name": "Eye Examination",
 		"duration": 30,
-		"maxPatients": 20,
 		"category": "DIAGNOSTIC",
 		"ratingsAverage": 4.6,
 		"ratingsQuantity": 4,
@@ -78,14 +75,14 @@
 		"description": "Our eye examination includes visual acuity testing, refraction assessment, intraocular pressure measurement, slit-lamp examination, and retinal imaging. Prescription for corrective lenses provided if needed.",
 		"imageCover": "https://images.unsplash.com/photo-1551884170-09fb70a3a2ed?w=800&q=80",
 		"doctors": [
-			"5c8a1f4e2f8fb814b56fa185"
+			"5c8a1f4e2f8fb814b56fa185",
+			"5c8a2d412f8fb814b56fa200"
 		]
 	},
 	{
 		"_id": "5c88fa8cf4afda39709c295f",
 		"name": "X-Ray Imaging",
 		"duration": 20,
-		"maxPatients": 30,
 		"category": "DIAGNOSTIC",
 		"ratingsAverage": 4.4,
 		"ratingsQuantity": 3,
@@ -95,14 +92,14 @@
 		"imageCover": "https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&q=80",
 		"doctors": [
 			"5c8a1f292f8fb814b56fa184",
-			"5c8a201e2f8fb814b56fa186"
+			"5c8a201e2f8fb814b56fa186",
+			"5c8a2d412f8fb814b56fa201"
 		]
 	},
 	{
 		"_id": "5c88fa8cf4afda39709c2960",
 		"name": "Cardiac Checkup",
 		"duration": 45,
-		"maxPatients": 12,
 		"category": "CONSULTATION",
 		"ratingsAverage": 4.8,
 		"ratingsQuantity": 5,
@@ -111,14 +108,14 @@
 		"description": "Our cardiac checkup includes a resting ECG, blood pressure monitoring, heart auscultation, cardiovascular risk assessment, and lifestyle counseling. Ideal for patients with a family history of heart disease or those experiencing symptoms.",
 		"imageCover": "https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=800&q=80",
 		"doctors": [
-			"5c8a1f292f8fb814b56fa184"
+			"5c8a1f292f8fb814b56fa184",
+			"5c8a2d412f8fb814b56fa200"
 		]
 	},
 	{
 		"_id": "5c88fa8cf4afda39709c2961",
 		"name": "Minor Surgical Procedure",
 		"duration": 90,
-		"maxPatients": 5,
 		"category": "SURGERY",
 		"ratingsAverage": 4.7,
 		"ratingsQuantity": 2,
@@ -128,14 +125,14 @@
 		"imageCover": "https://images.unsplash.com/photo-1551190822-a9333d879b1f?w=800&q=80",
 		"doctors": [
 			"5c8a1f4e2f8fb814b56fa185",
-			"5c8a23412f8fb814b56fa18c"
+			"5c8a23412f8fb814b56fa18c",
+			"5c8a2d412f8fb814b56fa201"
 		]
 	},
 	{
 		"_id": "5c88fa8cf4afda39709c2962",
 		"name": "Dermatology Consultation",
 		"duration": 30,
-		"maxPatients": 18,
 		"category": "CONSULTATION",
 		"ratingsAverage": 4.3,
 		"ratingsQuantity": 4,
@@ -144,14 +141,14 @@
 		"description": "Our dermatology consultation covers acne treatment, eczema management, skin cancer screening, rash diagnosis, and cosmetic skin concerns. Includes a full skin examination with dermoscopy when needed.",
 		"imageCover": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=800&q=80",
 		"doctors": [
-			"5c8a201e2f8fb814b56fa186"
+			"5c8a201e2f8fb814b56fa186",
+			"5c8a2d412f8fb814b56fa200"
 		]
 	},
 	{
 		"_id": "5c88fa8cf4afda39709c2963",
 		"name": "Psychological Therapy",
 		"duration": 50,
-		"maxPatients": 8,
 		"category": "THERAPY",
 		"ratingsAverage": 4.9,
 		"ratingsQuantity": 3,
@@ -160,7 +157,169 @@
 		"description": "Our psychological therapy services include cognitive behavioral therapy, anxiety and depression management, stress counseling, and coping strategies. Sessions are fully confidential and conducted in a comfortable, private setting.",
 		"imageCover": "https://images.unsplash.com/photo-1573497620053-ea5300f94f21?w=800&q=80",
 		"doctors": [
-			"5c8a1f4e2f8fb814b56fa185"
+			"5c8a1f4e2f8fb814b56fa185",
+			"5c8a2d412f8fb814b56fa202"
+		]
+	},
+	{
+		"_id": "5c88fa8cf4afda39709c2964",
+		"name": "MRI Scan",
+		"duration": 45,
+		"category": "DIAGNOSTIC",
+		"ratingsAverage": 4.6,
+		"ratingsQuantity": 0,
+		"price": 350,
+		"summary": "High-resolution magnetic resonance imaging for brain, spine, and soft tissue.",
+		"description": "Our MRI scan provides detailed imaging of the brain, spinal cord, joints, and soft tissues without radiation. Commonly used to diagnose neurological conditions, ligament injuries, tumors, and organ abnormalities. Results are reviewed by a specialist and available within 24 hours.",
+		"imageCover": "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=800&q=80",
+		"doctors": [
+			"5c8a1f292f8fb814b56fa184",
+			"5c8a2d412f8fb814b56fa200"
+		]
+	},
+	{
+		"_id": "5c88fa8cf4afda39709c2965",
+		"name": "Nutrition Consultation",
+		"duration": 30,
+		"category": "CONSULTATION",
+		"ratingsAverage": 4.5,
+		"ratingsQuantity": 0,
+		"price": 80,
+		"summary": "Personalized dietary assessment and meal planning with a clinical nutritionist.",
+		"description": "Our nutrition consultation covers full dietary assessment, body composition analysis, personalized meal planning, and guidance on managing weight, chronic conditions, or athletic performance. Follow-up sessions available to track progress and adjust your plan.",
+		"imageCover": "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=80",
+		"doctors": [
+			"5c8a1f4e2f8fb814b56fa185",
+			"5c8a2d412f8fb814b56fa202"
+		]
+	},
+	{
+		"_id": "5c88fa8cf4afda39709c2966",
+		"name": "Vaccination Package",
+		"duration": 15,
+		"category": "TREATMENT",
+		"ratingsAverage": 4.7,
+		"ratingsQuantity": 0,
+		"price": 60,
+		"summary": "Standard adult vaccination package including flu, hepatitis, and travel vaccines.",
+		"description": "Stay protected with our comprehensive vaccination service. We offer seasonal flu shots, hepatitis A and B, tetanus boosters, travel vaccines, and more. Our staff will review your vaccination history and recommend what is appropriate for your age and lifestyle.",
+		"imageCover": "https://images.unsplash.com/photo-1584118624012-df056829fbd0?w=800&q=80",
+		"doctors": [
+			"5c8a201e2f8fb814b56fa186",
+			"5c8a2d412f8fb814b56fa202"
+		]
+	},
+	{
+		"_id": "5c88fa8cf4afda39709c2967",
+		"name": "Ultrasound Imaging",
+		"duration": 20,
+		"category": "DIAGNOSTIC",
+		"ratingsAverage": 4.5,
+		"ratingsQuantity": 0,
+		"price": 130,
+		"summary": "Real-time ultrasound imaging for abdominal, pelvic, and musculoskeletal assessment.",
+		"description": "Our ultrasound service uses high-frequency sound waves to produce real-time images of internal organs and structures. Used for evaluating the abdomen, pelvis, thyroid, kidneys, and musculoskeletal system. Safe, painless, and no radiation involved.",
+		"imageCover": "https://images.unsplash.com/photo-1666214280557-f1b5022eb634?w=800&q=80",
+		"doctors": [
+			"5c8a1f292f8fb814b56fa184",
+			"5c8a2d412f8fb814b56fa200",
+			"5c8a2d412f8fb814b56fa202"
+		]
+	},
+	{
+		"_id": "5c88fa8cf4afda39709c2968",
+		"name": "Orthopedic Consultation",
+		"duration": 30,
+		"category": "CONSULTATION",
+		"ratingsAverage": 4.6,
+		"ratingsQuantity": 0,
+		"price": 110,
+		"summary": "Expert assessment of bone, joint, and muscle conditions by an orthopedic specialist.",
+		"description": "Our orthopedic consultation covers evaluation of fractures, joint pain, sports injuries, arthritis, and posture-related conditions. The doctor will review your imaging, assess range of motion, and recommend a treatment plan including physiotherapy, medication, or surgical referral.",
+		"imageCover": "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=80",
+		"doctors": [
+			"5c8a23412f8fb814b56fa18c",
+			"5c8a2d412f8fb814b56fa201"
+		]
+	},
+	{
+		"_id": "5c88fa8cf4afda39709c2969",
+		"name": "Allergy Testing",
+		"duration": 45,
+		"category": "DIAGNOSTIC",
+		"ratingsAverage": 4.4,
+		"ratingsQuantity": 0,
+		"price": 160,
+		"summary": "Skin prick and blood-based allergy panel to identify triggers and sensitivities.",
+		"description": "Our allergy testing identifies reactions to common allergens including pollen, dust mites, pet dander, mold, foods, and insect venom. Includes a skin prick test and targeted blood IgE panel. Results are reviewed with the doctor who will recommend an appropriate management plan.",
+		"imageCover": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&q=80",
+		"doctors": [
+			"5c8a1f4e2f8fb814b56fa185",
+			"5c8a2d412f8fb814b56fa200"
+		]
+	},
+	{
+		"_id": "5c88fa8cf4afda39709c296a",
+		"name": "Diabetes Management",
+		"duration": 30,
+		"category": "CONSULTATION",
+		"ratingsAverage": 4.7,
+		"ratingsQuantity": 0,
+		"price": 95,
+		"summary": "Ongoing diabetes monitoring and lifestyle coaching for Type 1 and Type 2 patients.",
+		"description": "Our diabetes management consultations include HbA1c review, blood glucose monitoring guidance, medication adjustment, dietary counseling, and complication screening. Suitable for newly diagnosed patients and those seeking better long-term control.",
+		"imageCover": "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=800&q=80",
+		"doctors": [
+			"5c8a1f292f8fb814b56fa184",
+			"5c8a2d412f8fb814b56fa202"
+		]
+	},
+	{
+		"_id": "5c88fa8cf4afda39709c296b",
+		"name": "Prenatal Checkup",
+		"duration": 30,
+		"category": "CONSULTATION",
+		"ratingsAverage": 4.9,
+		"ratingsQuantity": 0,
+		"price": 120,
+		"summary": "Routine prenatal visit for monitoring maternal and fetal health during pregnancy.",
+		"description": "Our prenatal checkups include fundal height measurement, fetal heartbeat monitoring, blood pressure and urine screening, and answers to any pregnancy-related questions. We support you through every trimester with compassionate, evidence-based care.",
+		"imageCover": "https://images.unsplash.com/photo-1584820927498-cad076eab187?w=800&q=80",
+		"doctors": [
+			"5c8a1f4e2f8fb814b56fa185",
+			"5c8a201e2f8fb814b56fa186"
+		]
+	},
+	{
+		"_id": "5c88fa8cf4afda39709c296c",
+		"name": "ECG Recording",
+		"duration": 15,
+		"category": "DIAGNOSTIC",
+		"ratingsAverage": 4.5,
+		"ratingsQuantity": 0,
+		"price": 70,
+		"summary": "Resting 12-lead electrocardiogram to assess heart rhythm and electrical activity.",
+		"description": "A 12-lead ECG is a quick, painless test that records the electrical activity of your heart. Used to detect arrhythmias, ischemia, heart enlargement, and other cardiac conditions. Results are interpreted by a cardiologist and provided to you within the same appointment.",
+		"imageCover": "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=800&q=80",
+		"doctors": [
+			"5c8a1f292f8fb814b56fa184",
+			"5c8a2d412f8fb814b56fa200"
+		]
+	},
+	{
+		"_id": "5c88fa8cf4afda39709c296d",
+		"name": "Speech Therapy",
+		"duration": 45,
+		"category": "THERAPY",
+		"ratingsAverage": 4.8,
+		"ratingsQuantity": 0,
+		"price": 110,
+		"summary": "Targeted speech and language therapy for adults and children.",
+		"description": "Our speech therapy sessions address stuttering, articulation disorders, voice problems, swallowing difficulties, and language delays. Each program is individually designed following a comprehensive communication assessment. Sessions may be conducted in-person or via telehealth.",
+		"imageCover": "https://images.unsplash.com/photo-1588776814546-1ffbb172d09e?w=800&q=80",
+		"doctors": [
+			"5c8a1f4e2f8fb814b56fa185",
+			"5c8a2d412f8fb814b56fa200"
 		]
 	}
 ]

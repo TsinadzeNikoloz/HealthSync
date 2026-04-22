@@ -1,17 +1,16 @@
 import { formatDistance, parseISO, format } from 'date-fns';
 
-export function getUserPhotoUrl(photo?: string | null, name = 'U'): string {
-	if (!photo)
-		return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=4f46e5&color=fff`;
-	if (photo.startsWith('http') || photo.startsWith('/img')) return photo;
-	return `/img/users/${photo}`;
+export function getServiceImageUrl(imageCover?: string | null): string {
+	if (!imageCover) return `https://picsum.photos/seed/service/800/600`;
+	if (imageCover.startsWith('http') || imageCover.startsWith('/img')) return imageCover;
+	return `/img/services/${imageCover}`;
 }
 
-export function getAuthHeaders(): Record<string, string> {
-	const token = localStorage.getItem('jwt');
-	return token
-		? { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
-		: { 'Content-Type': 'application/json' };
+export function getUserPhotoUrl(photo?: string | null, name = 'U'): string {
+	if (!photo)
+		return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=2563eb&color=fff`;
+	if (photo.startsWith('http') || photo.startsWith('/img')) return photo;
+	return `/img/users/${photo}`;
 }
 
 export function formatCurrency(value: number): string {
@@ -30,7 +29,7 @@ export function formatDistanceFromNow(dateStr: string): string {
 }
 
 export function formatDate(dateStr: string): string {
-	return format(parseISO(dateStr), 'EEE, MMM dd yyyy');
+	return format(parseISO(dateStr), 'dd/MM/yyyy');
 }
 
 export function formatDateTime(dateStr: string): string {
@@ -42,6 +41,14 @@ export function formatTime(dateStr: string): string {
 		hour: '2-digit',
 		minute: '2-digit',
 		hour12: false,
+	});
+}
+
+export function formatLongDate(date: Date = new Date()): string {
+	return date.toLocaleDateString('en-US', {
+		weekday: 'long',
+		month: 'long',
+		day: 'numeric',
 	});
 }
 

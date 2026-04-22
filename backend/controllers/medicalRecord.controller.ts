@@ -83,9 +83,7 @@ export const createMedicalRecord = catchAsync(
 
 		res.status(201).json({
 			status: 'success',
-			data: {
-				medicalRecord,
-			},
+			data: { doc: medicalRecord },
 		});
 	},
 );
@@ -119,9 +117,7 @@ export const updateMedicalRecord = catchAsync(
 
 		res.status(200).json({
 			status: 'success',
-			data: {
-				medicalRecord,
-			},
+			data: { doc: medicalRecord },
 		});
 	},
 );
@@ -143,9 +139,7 @@ export const getPatientMedicalRecords = catchAsync(
 		res.status(200).json({
 			status: 'success',
 			results: medicalRecords.length,
-			data: {
-				medicalRecords,
-			},
+			data: { docs: medicalRecords },
 		});
 	},
 );
@@ -167,9 +161,7 @@ export const getMedicalRecordByAppointment = catchAsync(
 
 		res.status(200).json({
 			status: 'success',
-			data: {
-				medicalRecord,
-			},
+			data: { doc: medicalRecord },
 		});
 	},
 );

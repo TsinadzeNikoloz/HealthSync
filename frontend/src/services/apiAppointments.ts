@@ -1,5 +1,5 @@
-import { API_URL, PAGE_SIZE } from '../utils/constants';
-import { getAuthHeaders } from '../utils/helpers';
+import apiClient from './apiClient';
+import { buildQueryParams } from './buildQueryParams';
 import type {
 	Appointment,
 	CreateAppointmentFormData,
@@ -19,20 +19,12 @@ export async function getAvailableSlots({
 	date: string;
 	duration?: number;
 }): Promise<string[]> {
-	const params = new URLSearchParams({ date });
-	if (duration) params.set('duration', String(duration));
+	const params: Record<string, string> = { date };
+	if (duration) params.duration = String(duration);
 
-	const res = await fetch(
-		`${API_URL}/users/availability/${doctorId}?${params.toString()}`,
-		{ method: 'GET', credentials: 'include' },
-	);
-
-	const data = await res.json();
-
-	if (data.status !== 'success') {
-		throw new Error(data.message);
-	}
-
+	const { data } = await apiClient.get(`/users/availability/${doctorId}`, {
+		params,
+	});
 	return data.data.slots as string[];
 }
 
@@ -44,46 +36,21 @@ export async function getAppointments({
 	sortBy,
 	page,
 	search,
+	dateFrom,
+	dateTo,
 }: {
 	filter?: FilterParam | null;
 	sortBy?: SortParam | null;
 	page?: number;
 	search?: string;
+	dateFrom?: string;
+	dateTo?: string;
 }): Promise<{ data: Appointment[]; count: number }> {
-	const params = new URLSearchParams();
+	const params = buildQueryParams({ filter, sortBy, page, search });
+	if (dateFrom) params['date[gte]'] = dateFrom;
+	if (dateTo) params['date[lte]'] = dateTo;
 
-	// Search
-	if (search) params.set('search', search);
-
-	// Filtering
-	if (filter) {
-		params.set(filter.field, filter.value);
-	}
-
-	// Sorting
-	if (sortBy) {
-		const prefix = sortBy.direction === 'desc' ? '-' : '';
-		params.set('sort', `${prefix}${sortBy.field}`);
-	}
-
-	// Pagination
-	if (page) {
-		params.set('page', String(page));
-		params.set('limit', String(PAGE_SIZE));
-	}
-
-	const res = await fetch(`${API_URL}/appointments?${params.toString()}`, {
-		method: 'GET',
-		credentials: 'include',
-		headers: getAuthHeaders(),
-	});
-
-	const data = await res.json();
-
-	if (data.status !== 'success') {
-		throw new Error(data.message);
-	}
-
+	const { data } = await apiClient.get('/appointments', { params });
 	return { data: data.data.docs as Appointment[], count: data.results };
 }
 
@@ -94,43 +61,22 @@ export async function getMyAppointments({
 	filter,
 	sortBy,
 	page,
+	dateFrom,
+	dateTo,
 }: {
 	filter?: FilterParam | null;
 	sortBy?: SortParam | null;
 	page?: number;
-} = {}): Promise<{
-	data: Appointment[];
-	count: number;
-}> {
-	const params = new URLSearchParams();
+	dateFrom?: string;
+	dateTo?: string;
+} = {}): Promise<{ data: Appointment[]; count: number }> {
+	const params = buildQueryParams({ filter, sortBy, page });
+	if (dateFrom) params['date[gte]'] = dateFrom;
+	if (dateTo) params['date[lte]'] = dateTo;
 
-	if (filter) params.set(filter.field, filter.value);
-
-	if (sortBy) {
-		const prefix = sortBy.direction === 'desc' ? '-' : '';
-		params.set('sort', `${prefix}${sortBy.field}`);
-	}
-
-	if (page) {
-		params.set('page', String(page));
-		params.set('limit', String(PAGE_SIZE));
-	}
-
-	const res = await fetch(
-		`${API_URL}/appointments/my-appointments?${params.toString()}`,
-		{
-			method: 'GET',
-			credentials: 'include',
-			headers: getAuthHeaders(),
-		},
-	);
-
-	const data = await res.json();
-
-	if (data.status !== 'success') {
-		throw new Error(data.message);
-	}
-
+	const { data } = await apiClient.get('/appointments/my-appointments', {
+		params,
+	});
 	return { data: data.data.docs as Appointment[], count: data.results };
 }
 
@@ -138,18 +84,7 @@ export async function getMyAppointments({
 // GET SINGLE APPOINTMENT
 // ---------------------------------------------------------------------------
 export async function getAppointment(id: string): Promise<Appointment> {
-	const res = await fetch(`${API_URL}/appointments/${id}`, {
-		method: 'GET',
-		credentials: 'include',
-		headers: getAuthHeaders(),
-	});
-
-	const data = await res.json();
-
-	if (data.status !== 'success') {
-		throw new Error(data.message);
-	}
-
+	const { data } = await apiClient.get(`/appointments/${id}`);
 	return data.data.doc as Appointment;
 }
 
@@ -159,20 +94,8 @@ export async function getAppointment(id: string): Promise<Appointment> {
 export async function createAppointment(
 	appointmentData: CreateAppointmentFormData,
 ): Promise<Appointment> {
-	const res = await fetch(`${API_URL}/appointments`, {
-		method: 'POST',
-		credentials: 'include',
-		headers: getAuthHeaders(),
-		body: JSON.stringify(appointmentData),
-	});
-
-	const data = await res.json();
-
-	if (data.status !== 'success') {
-		throw new Error(data.message);
-	}
-
-	return data.data.data as Appointment;
+	const { data } = await apiClient.post('/appointments', appointmentData);
+	return data.data.doc as Appointment;
 }
 
 // ---------------------------------------------------------------------------
@@ -185,37 +108,15 @@ export async function updateAppointment({
 	id: string;
 	updates: Partial<CreateAppointmentFormData>;
 }): Promise<Appointment> {
-	const res = await fetch(`${API_URL}/appointments/${id}`, {
-		method: 'PATCH',
-		credentials: 'include',
-		headers: getAuthHeaders(),
-		body: JSON.stringify(updates),
-	});
-
-	const data = await res.json();
-
-	if (data.status !== 'success') {
-		throw new Error(data.message);
-	}
-
-	return data.data.data as Appointment;
+	const { data } = await apiClient.patch(`/appointments/${id}`, updates);
+	return data.data.doc as Appointment;
 }
 
 // ---------------------------------------------------------------------------
 // DELETE APPOINTMENT
 // ---------------------------------------------------------------------------
 export async function deleteAppointment(id: string): Promise<void> {
-	const res = await fetch(`${API_URL}/appointments/${id}`, {
-		method: 'DELETE',
-		credentials: 'include',
-		headers: getAuthHeaders(),
-	});
-
-	// factory.deleteOne() returns 204 No Content
-	if (res.status !== 204) {
-		const data = await res.json();
-		throw new Error(data.message);
-	}
+	await apiClient.delete(`/appointments/${id}`);
 }
 
 // ---------------------------------------------------------------------------
@@ -230,24 +131,10 @@ export async function getCheckoutSession({
 	doctor: string;
 	date: string;
 }): Promise<{ url: string }> {
-	const params = new URLSearchParams({ doctor, date });
-
-	const res = await fetch(
-		`${API_URL}/appointments/checkout-session/${serviceId}?${params.toString()}`,
-		{
-			method: 'GET',
-			credentials: 'include',
-			headers: getAuthHeaders(),
-		},
+	const { data } = await apiClient.get(
+		`/appointments/checkout-session/${serviceId}`,
+		{ params: { doctor, date } },
 	);
-
-	const data = await res.json();
-
-	if (data.status !== 'success') {
-		throw new Error(data.message);
-	}
-
-	// Stripe session contains the checkout URL
 	return { url: data.session.url };
 }
 
@@ -265,20 +152,13 @@ export async function createAppointmentFromCheckout({
 	date: string;
 	price: string;
 }): Promise<Appointment> {
-	const res = await fetch(`${API_URL}/appointments/create-from-checkout`, {
-		method: 'POST',
-		credentials: 'include',
-		headers: getAuthHeaders(),
-		body: JSON.stringify({ service, doctor, date, price }),
+	const { data } = await apiClient.post('/appointments/create-from-checkout', {
+		service,
+		doctor,
+		date,
+		price,
 	});
-
-	const data = await res.json();
-
-	if (data.status !== 'success') {
-		throw new Error(data.message);
-	}
-
-	return data.data.appointment as Appointment;
+	return data.data.doc as Appointment;
 }
 
 // ---------------------------------------------------------------------------
@@ -294,12 +174,6 @@ export interface AppointmentStats {
 }
 
 export async function getAppointmentStats(): Promise<AppointmentStats> {
-	const res = await fetch(`${API_URL}/appointments/stats`, {
-		method: 'GET',
-		credentials: 'include',
-		headers: getAuthHeaders(),
-	});
-	const data = await res.json();
-	if (data.status !== 'success') throw new Error(data.message);
+	const { data } = await apiClient.get('/appointments/stats');
 	return data.data as AppointmentStats;
 }

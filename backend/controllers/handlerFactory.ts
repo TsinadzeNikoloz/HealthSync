@@ -10,7 +10,7 @@ export const createOne = <T>(ModelRef: Model<T>) =>
 
 		res.status(201).json({
 			status: 'success',
-			data: { data: doc },
+			data: { doc },
 		});
 	});
 
@@ -80,7 +80,7 @@ export const updateOne = <T>(ModelRef: Model<T>) =>
 
 		res.status(200).json({
 			status: 'success',
-			data: { data: doc },
+			data: { doc },
 		});
 	});
 

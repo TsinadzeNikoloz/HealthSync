@@ -9,6 +9,9 @@ backend/config.env
 .env
 .env.*
 
+# Thesis docs
+docs/
+
 # Excluded folders
 frontend copy/
 frontend2/

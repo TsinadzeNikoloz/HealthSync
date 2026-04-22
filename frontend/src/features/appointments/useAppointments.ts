@@ -32,6 +32,8 @@ export function useAppointments() {
     : Number(searchParams.get("page"));
 
   const search = searchParams.get("search") || "";
+  const dateFrom = searchParams.get("dateFrom") || undefined;
+  const dateTo = searchParams.get("dateTo") || undefined;
 
   // QUERY — patients use /my-appointments, staff use /appointments
   const {
@@ -40,11 +42,11 @@ export function useAppointments() {
     error,
   } = useQuery({
     queryKey: isPatient
-      ? ["my-appointments", filter, sortBy, page]
-      : ["appointments", filter, sortBy, page, search],
+      ? ["my-appointments", filter, sortBy, page, dateFrom, dateTo]
+      : ["appointments", filter, sortBy, page, search, dateFrom, dateTo],
     queryFn: isPatient
-      ? () => getMyAppointments({ filter, sortBy, page })
-      : () => getAppointments({ filter, sortBy, page, search }),
+      ? () => getMyAppointments({ filter, sortBy, page, dateFrom, dateTo })
+      : () => getAppointments({ filter, sortBy, page, search, dateFrom, dateTo }),
   });
 
   // PRE-FETCHING
@@ -53,21 +55,21 @@ export function useAppointments() {
   if (page < pageCount)
     queryClient.prefetchQuery({
       queryKey: isPatient
-        ? ["my-appointments", filter, sortBy, page + 1]
-        : ["appointments", filter, sortBy, page + 1, search],
+        ? ["my-appointments", filter, sortBy, page + 1, dateFrom, dateTo]
+        : ["appointments", filter, sortBy, page + 1, search, dateFrom, dateTo],
       queryFn: isPatient
-        ? () => getMyAppointments({ filter, sortBy, page: page + 1 })
-        : () => getAppointments({ filter, sortBy, page: page + 1, search }),
+        ? () => getMyAppointments({ filter, sortBy, page: page + 1, dateFrom, dateTo })
+        : () => getAppointments({ filter, sortBy, page: page + 1, search, dateFrom, dateTo }),
     });
 
   if (page > 1)
     queryClient.prefetchQuery({
       queryKey: isPatient
-        ? ["my-appointments", filter, sortBy, page - 1]
-        : ["appointments", filter, sortBy, page - 1, search],
+        ? ["my-appointments", filter, sortBy, page - 1, dateFrom, dateTo]
+        : ["appointments", filter, sortBy, page - 1, search, dateFrom, dateTo],
       queryFn: isPatient
-        ? () => getMyAppointments({ filter, sortBy, page: page - 1 })
-        : () => getAppointments({ filter, sortBy, page: page - 1, search }),
+        ? () => getMyAppointments({ filter, sortBy, page: page - 1, dateFrom, dateTo })
+        : () => getAppointments({ filter, sortBy, page: page - 1, search, dateFrom, dateTo }),
     });
 
   return { appointments, count, isPending, error };

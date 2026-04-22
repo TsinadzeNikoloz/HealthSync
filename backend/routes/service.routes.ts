@@ -20,6 +20,8 @@ router
 	.post(
 		authController.jwtProtect,
 		authController.restrictTo('ADMIN'),
+		serviceController.uploadServiceImage,
+		serviceController.resizeServiceImage,
 		serviceController.createService,
 	);
 
@@ -29,6 +31,8 @@ router
 	.patch(
 		authController.jwtProtect,
 		authController.restrictTo('ADMIN'),
+		serviceController.uploadServiceImage,
+		serviceController.resizeServiceImage,
 		serviceController.updateService,
 	)
 	.delete(
