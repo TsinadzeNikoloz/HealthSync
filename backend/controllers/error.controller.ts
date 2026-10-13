@@ -33,6 +33,14 @@ const handleValidationErrorDB = (err: MongoError) => {
 	return new AppError(message, 400);
 };
 
+const handleMulterError = (err: MongoError) => {
+	const message =
+		(err.code as unknown) === 'LIMIT_FILE_SIZE'
+			? 'Image is too large. Maximum size is 5 MB.'
+			: err.message;
+	return new AppError(message, 400);
+};
+
 const handleJWTError = () =>
 	new AppError('Invalid Token, Please log in again', 401);
 
@@ -77,6 +85,7 @@ const globalErrorHandler = (
 		error.name = err.name;
 
 		if (error.name === 'CastError') error = handleCastErrorDB(error) as any;
+		if (error.name === 'MulterError') error = handleMulterError(error) as any;
 		if (error.code === 11000) error = handleDuplicateFieldsDB(error) as any;
 		if (error.name === 'ValidationError')
 			error = handleValidationErrorDB(error) as any;
@@ -92,6 +101,7 @@ const globalErrorHandler = (
 			error = handleDuplicateFieldsDB(error) as any;
 		if (error.name === 'ValidationError')
 			error = handleValidationErrorDB(error) as any;
+		if (error.name === 'MulterError') error = handleMulterError(error) as any;
 		if (error.name === 'JsonWebTokenError') error = handleJWTError() as any;
 		if (error.name === 'TokenExpiredError')
 			error = handleJWTExpiredError() as any;
