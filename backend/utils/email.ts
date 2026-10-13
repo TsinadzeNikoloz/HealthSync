@@ -125,28 +125,20 @@ class Email {
 		await this.send('Welcome to HealthSync!', html);
 	}
 
-	async sendPasswordReset() {
+	async sendPasswordReset(code: string) {
 		const html = this.wrapHtml(`
 			<h1 style="color: #2563eb;">Password Reset</h1>
 			<p style="color: #475569; font-size: 16px; line-height: 1.6;">
-				Hi ${this.firstName}, you requested a password reset. Click the button below to set a new password.
+				Hi ${this.firstName}, you requested a password reset. Enter the code below on the reset page to set a new password.
 			</p>
 			<div style="text-align: center; margin: 32px 0;">
-				<a href="${this.url}" style="background-color: #2563eb; color: white; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 16px; display: inline-block;">
-					Reset Password
-				</a>
+				<span style="display: inline-block; background: #f1f5f9; padding: 16px 40px; border-radius: 12px; font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #1e293b;">${code}</span>
 			</div>
 			<p style="color: #94a3b8; font-size: 14px; line-height: 1.6;">
-				If you didn't request this, please ignore this email. This link is valid for 10 minutes.
-			</p>
-			<p style="color: #94a3b8; font-size: 13px;">
-				Or copy this link: <a href="${this.url}" style="color: #2563eb;">${this.url}</a>
+				This code expires in 10 minutes. If you didn't request this, please ignore this email.
 			</p>
 		`);
-		await this.send(
-			'Your password reset token (valid for 10 minutes)',
-			html,
-		);
+		await this.send('Your password reset code (valid for 10 minutes)', html);
 	}
 
 	async sendBookingConfirmation(data: AppointmentEmailData) {

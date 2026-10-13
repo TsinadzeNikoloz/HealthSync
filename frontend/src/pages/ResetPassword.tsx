@@ -1,11 +1,14 @@
 import { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useResetPassword } from '../features/authentication/useResetPassword';
 import AppLogo from '../ui/AppLogo';
 import AuthPane from '../features/authentication/AuthPane';
+import Input from '../ui/Input';
 
 function ResetPassword() {
-	const { token } = useParams<{ token: string }>();
+	const [searchParams] = useSearchParams();
+	const [email, setEmail] = useState(searchParams.get('email') ?? '');
+	const [code, setCode] = useState('');
 	const [password, setPassword] = useState('');
 	const [passwordConfirm, setPasswordConfirm] = useState('');
 	const [error, setError] = useState('');
@@ -24,11 +27,11 @@ function ResetPassword() {
 			setError('Password must be at least 8 characters');
 			return;
 		}
-		if (!token) {
-			setError('Invalid reset link. Please request a new one.');
+		if (!/^d{6}$/.test(code)) {
+			setError('Enter the 6-digit code from your email');
 			return;
 		}
-		resetPassword({ token, password, passwordConfirm });
+		resetPassword({ email, code, password, passwordConfirm });
 	};
 
 	return (
@@ -68,7 +71,7 @@ function ResetPassword() {
 							Reset Password
 						</h2>
 						<p className="font-medium text-slate-500">
-							Enter your new password below.
+							Enter the 6-digit code we emailed you and choose a new password.
 						</p>
 					</div>
 
@@ -80,6 +83,30 @@ function ResetPassword() {
 					)}
 
 					<form onSubmit={handleSubmit} className="flex flex-col gap-6">
+						<Input
+							label="Email Address"
+							icon="fa-envelope"
+							type="email"
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
+							placeholder="name@email.com"
+							required
+						/>
+
+						<Input
+							label="Reset Code"
+							icon="fa-key"
+							type="text"
+							inputMode="numeric"
+							autoComplete="one-time-code"
+							maxLength={6}
+							pattern="d{6}"
+							value={code}
+							onChange={(e) => setCode(e.target.value.replace(/D/g, ''))}
+							placeholder="123456"
+							required
+						/>
+
 						<div className="w-full space-y-2">
 							<label className="ml-1 text-[10px] font-black uppercase tracking-widest text-slate-400">
 								New Password

@@ -4,7 +4,8 @@ import toast from 'react-hot-toast';
 import { resetPassword as resetPasswordApi } from '../../services/apiAuth';
 
 interface ResetPasswordData {
-	token: string;
+	email: string;
+	code: string;
 	password: string;
 	passwordConfirm: string;
 }
@@ -14,8 +15,8 @@ export function useResetPassword() {
 	const queryClient = useQueryClient();
 
 	const { mutate: resetPassword, isPending } = useMutation({
-		mutationFn: ({ token, password, passwordConfirm }: ResetPasswordData) =>
-			resetPasswordApi(token, password, passwordConfirm),
+		mutationFn: ({ email, code, password, passwordConfirm }: ResetPasswordData) =>
+			resetPasswordApi(email, code, password, passwordConfirm),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['user'] });
 			toast.success('Password reset! Welcome back.');
@@ -23,7 +24,7 @@ export function useResetPassword() {
 		},
 		onError: (err: Error) => {
 			toast.error(
-				err.message || 'Failed to reset password. The link may have expired.',
+				err.message || 'Failed to reset password. The code may have expired.',
 			);
 		},
 	});

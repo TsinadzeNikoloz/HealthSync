@@ -6,10 +6,10 @@ export function useForgotPassword() {
 	const { mutate: forgotPassword, isPending } = useMutation({
 		mutationFn: (email: string) => forgotPasswordApi(email),
 		onSuccess: () => {
-			toast.success('If that email is registered, a reset link has been sent.');
+			toast.success('If that email is registered, a reset code has been sent.');
 		},
 		onError: (err: Error) => {
-			toast.error(err.message || 'Failed to send reset link. Please try again.');
+			toast.error(err.message || 'Failed to send reset code. Please try again.');
 		},
 	});
 

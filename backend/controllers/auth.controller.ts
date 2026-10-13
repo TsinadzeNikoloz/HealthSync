@@ -7,6 +7,8 @@ import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/appError.js';
 import Email from '../utils/email.js';
 
+const MAX_RESET_ATTEMPTS = 5;
+
 const signToken = (id: string): string => {
 	return jwt.sign(
 		{ id },
@@ -282,13 +284,11 @@ export const forgotPassword = catchAsync(
 		const user = await User.findOne({ email: req.body.email });
 
 		if (user) {
-			const resetToken = user.createResetPasswordToken();
+			const resetCode = user.createResetPasswordCode();
 			await user.save({ validateBeforeSave: false });
 
-			const resetURL = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
-
 			try {
-				await new Email(user, resetURL).sendPasswordReset();
+				await new Email(user).sendPasswordReset(resetCode);
 			} catch (err) {
 				console.error('Failed to send password reset email:', err);
 				user.resetPasswordToken = undefined;
@@ -299,30 +299,50 @@ export const forgotPassword = catchAsync(
 
 		res.status(200).json({
 			status: 'success',
-			message: 'If that email is registered, a reset link has been sent.',
+			message: 'If that email is registered, a reset code has been sent.',
 		});
 	},
 );
 
 export const resetPassword = catchAsync(
 	async (req: Request, res: Response, next: NextFunction) => {
-		const hashedToken = crypto
-			.createHash('sha256')
-			.update(req.params.token as string)
-			.digest('hex');
+		const { email, code } = req.body;
+
+		if (typeof email !== 'string' || typeof code !== 'string') {
+			return next(new AppError('Please provide your email and reset code', 400));
+		}
+
+		const invalid = () =>
+			next(new AppError('Reset code is invalid or has expired', 400));
 
 		const user = await User.findOne({
-			resetPasswordToken: hashedToken,
+			email,
+			resetPasswordToken: { $exists: true, $ne: null },
 			resetPasswordExpires: { $gt: Date.now() },
 		});
 
-		if (!user) {
-			return next(new AppError('Token is invalid or has expired', 400));
+		if (!user) return invalid();
+
+		// Limit guesses: a 6-digit code is only safe with an attempt cap
+		if ((user.resetPasswordAttempts ?? 0) >= MAX_RESET_ATTEMPTS) {
+			user.resetPasswordToken = undefined;
+			user.resetPasswordExpires = undefined;
+			await user.save({ validateBeforeSave: false });
+			return invalid();
 		}
+
+		const hashedCode = crypto.createHash('sha256').update(code).digest('hex');
+		if (hashedCode !== user.resetPasswordToken) {
+			user.resetPasswordAttempts = (user.resetPasswordAttempts ?? 0) + 1;
+			await user.save({ validateBeforeSave: false });
+			return invalid();
+		}
+
 		user.password = req.body.password;
 		user.passwordConfirm = req.body.passwordConfirm;
 		user.resetPasswordToken = undefined;
 		user.resetPasswordExpires = undefined;
+		user.resetPasswordAttempts = 0;
 		await user.save();
 
 		createAndSendToken(user, 200, res);

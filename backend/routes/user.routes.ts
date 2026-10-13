@@ -22,7 +22,7 @@ router.post('/login', loginLimiter, authController.login);
 router.get('/logout', authController.logout);
 router.post('/verifyOTP', authController.verifyOTP);
 router.post('/forgotPassword', authController.forgotPassword);
-router.patch('/resetPassword/:token', authController.resetPassword);
+router.patch('/resetPassword', authController.resetPassword);
 
 // Public: browse doctors
 router.get('/doctors', userController.getAllDoctors);

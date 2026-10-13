@@ -56,6 +56,7 @@ const PAGE_TITLES: Record<string, string> = {
 	'/login': 'Login',
 	'/signup': 'Sign Up',
 	'/forgot-password': 'Forgot Password',
+	'/reset-password': 'Reset Password',
 };
 
 function TitleManager() {
@@ -162,10 +163,7 @@ export default function App() {
 							</Route>
 
 							{/* Accessible regardless of auth */}
-							<Route
-								path="/reset-password/:token"
-								element={<ResetPassword />}
-							/>
+							<Route path="/reset-password" element={<ResetPassword />} />
 
 							{/* Protected routes */}
 							<Route element={<AppLayout />}>

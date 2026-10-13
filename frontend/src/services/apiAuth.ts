@@ -120,11 +120,14 @@ export async function forgotPassword(email: string): Promise<void> {
 // RESET PASSWORD
 // ---------------------------------------------------------------------------
 export async function resetPassword(
-	token: string,
+	email: string,
+	code: string,
 	password: string,
 	passwordConfirm: string,
 ): Promise<void> {
-	const { data } = await apiClient.patch(`/users/resetPassword/${token}`, {
+	const { data } = await apiClient.patch('/users/resetPassword', {
+		email,
+		code,
 		password,
 		passwordConfirm,
 	});

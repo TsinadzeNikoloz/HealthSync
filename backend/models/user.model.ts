@@ -23,6 +23,7 @@ export interface IUser extends Document {
 	passwordChangedAt?: Date;
 	resetPasswordToken?: string;
 	resetPasswordExpires?: Date;
+	resetPasswordAttempts?: number;
 	twoFactorEnabled: boolean;
 	otpCode?: string;
 	otpExpires?: Date;
@@ -33,7 +34,7 @@ export interface IUser extends Document {
 		userPassword: string,
 	): Promise<boolean>;
 	changedPasswordAfter(JWTTimestamp: number): boolean;
-	createResetPasswordToken(): string;
+	createResetPasswordCode(): string;
 	createOTP(): string;
 }
 
@@ -119,6 +120,10 @@ const userSchema = new Schema<IUser, IUserModel>(
 		passwordChangedAt: Date,
 		resetPasswordToken: String,
 		resetPasswordExpires: Date,
+		resetPasswordAttempts: {
+			type: Number,
+			default: 0,
+		},
 		twoFactorEnabled: {
 			type: Boolean,
 			default: false,
@@ -209,17 +214,19 @@ userSchema.methods.createOTP = function (): string {
 	return otp;
 };
 
-userSchema.methods.createResetPasswordToken = function (): string {
-	const resetToken = crypto.randomBytes(32).toString('hex');
+// 6-digit code emailed to the user; only its hash is stored
+userSchema.methods.createResetPasswordCode = function (): string {
+	const code = crypto.randomInt(100000, 1000000).toString();
 
 	this.resetPasswordToken = crypto
 		.createHash('sha256')
-		.update(resetToken)
+		.update(code)
 		.digest('hex');
 
 	this.resetPasswordExpires = new Date(Date.now() + 10 * 60 * 1000);
+	this.resetPasswordAttempts = 0;
 
-	return resetToken;
+	return code;
 };
 
 const User = mongoose.model<IUser, IUserModel>('User', userSchema);
