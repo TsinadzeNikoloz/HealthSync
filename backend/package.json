@@ -9,6 +9,7 @@
 		"start:prod": "cross-env NODE_ENV=production node dist/server.js",
 		"build": "tsc",
 		"import:data": "tsx dev-data/data/import-dev-data.ts",
+		"migrate:images": "tsx scripts/migrate-images-to-cloudinary.ts",
 		"test": "vitest run",
 		"test:watch": "vitest"
 	},
@@ -17,6 +18,7 @@
 	"dependencies": {
 		"bcryptjs": "^3.0.2",
 		"chalk": "^4.1.2",
+		"cloudinary": "^2.11.0",
 		"cookie-parser": "^1.4.7",
 		"cors": "^2.8.6",
 		"dotenv": "^16.6.1",

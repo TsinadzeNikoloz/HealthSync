@@ -6,6 +6,7 @@ import User from '../models/user.model.js';
 import Appointment from '../models/appointment.model.js';
 import APIFeatures from '../utils/apiFeatures.js';
 import catchAsync from '../utils/catchAsync.js';
+import { storeImage } from '../utils/imageStorage.js';
 import * as factory from './handlerFactory.js';
 
 const multerStorage = multer.memoryStorage();
@@ -38,13 +39,18 @@ export const resizeUserPhoto = catchAsync(
 	async (req: Request, _res: Response, next: NextFunction) => {
 		if (!req.file) return next();
 
-		req.file.filename = `user-${req.user!.id}-${Date.now()}.jpeg`;
-
-		await sharp(req.file.buffer)
+		const buffer = await sharp(req.file.buffer)
 			.resize(500, 500)
 			.toFormat('jpeg')
 			.jpeg({ quality: 90 })
-			.toFile(`public/img/users/${req.file.filename}`);
+			.toBuffer();
+
+		// filename ends up as the stored photo value: a Cloudinary URL, or a local filename in dev
+		req.file.filename = await storeImage(
+			buffer,
+			'users',
+			`user-${req.user!.id}-${Date.now()}`,
+		);
 
 		next();
 	},

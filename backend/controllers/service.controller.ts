@@ -5,6 +5,7 @@ import type { Request, Response, NextFunction } from 'express';
 import AppError from '../utils/appError.js';
 import Service from '../models/service.model.js';
 import catchAsync from '../utils/catchAsync.js';
+import { storeImage } from '../utils/imageStorage.js';
 import * as factory from './handlerFactory.js';
 
 const multerStorage = multer.memoryStorage();
@@ -33,13 +34,17 @@ export const resizeServiceImage = catchAsync(
 		if (!req.file) return next();
 
 		const id = req.params.id ?? new mongoose.Types.ObjectId().toString();
-		req.body.imageCover = `service-${id}-${Date.now()}-cover.jpeg`;
-
-		await sharp(req.file.buffer)
+		const buffer = await sharp(req.file.buffer)
 			.resize(2000, 1333)
 			.toFormat('jpeg')
 			.jpeg({ quality: 90 })
-			.toFile(`public/img/services/${req.body.imageCover}`);
+			.toBuffer();
+
+		req.body.imageCover = await storeImage(
+			buffer,
+			'services',
+			`service-${id}-${Date.now()}-cover`,
+		);
 
 		next();
 	},
