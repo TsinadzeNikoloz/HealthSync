@@ -37,15 +37,38 @@ class Email {
 	}
 
 	async send(subject: string, html: string) {
-		const mailOptions = {
+		const text = html.replace(/<[^>]*>/g, '');
+
+		// Hosts like Render's free tier block outbound SMTP, so prefer an HTTPS API when configured
+		if (process.env.BREVO_API_KEY) {
+			const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+				method: 'POST',
+				headers: {
+					'api-key': process.env.BREVO_API_KEY,
+					'content-type': 'application/json',
+					accept: 'application/json',
+				},
+				body: JSON.stringify({
+					sender: { name: 'HealthSync', email: process.env.EMAIL_FROM },
+					to: [{ email: this.to }],
+					subject,
+					htmlContent: html,
+					textContent: text,
+				}),
+			});
+			if (!res.ok) {
+				throw new Error(`Brevo API ${res.status}: ${await res.text()}`);
+			}
+			return;
+		}
+
+		await this.newTransport().sendMail({
 			from: this.from,
 			to: this.to,
 			subject,
 			html,
-			text: html.replace(/<[^>]*>/g, ''),
-		};
-
-		await this.newTransport().sendMail(mailOptions);
+			text,
+		});
 	}
 
 	private formatDate(date: Date): string {
