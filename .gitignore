@@ -9,8 +9,11 @@ backend/config.env
 .env
 .env.*
 
-# Thesis docs
-docs/
+# Thesis docs (only the compiled thesis PDF is tracked)
+docs/*
+!docs/thesis/
+docs/thesis/*
+!docs/thesis/main.pdf
 
 # Excluded folders
 frontend copy/
