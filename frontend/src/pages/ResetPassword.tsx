@@ -27,7 +27,7 @@ function ResetPassword() {
 			setError('Password must be at least 8 characters');
 			return;
 		}
-		if (!/^d{6}$/.test(code)) {
+		if (!/^\d{6}$/.test(code)) {
 			setError('Enter the 6-digit code from your email');
 			return;
 		}
@@ -100,9 +100,9 @@ function ResetPassword() {
 							inputMode="numeric"
 							autoComplete="one-time-code"
 							maxLength={6}
-							pattern="d{6}"
+							pattern="[0-9]{6}"
 							value={code}
-							onChange={(e) => setCode(e.target.value.replace(/D/g, ''))}
+							onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
 							placeholder="123456"
 							required
 						/>

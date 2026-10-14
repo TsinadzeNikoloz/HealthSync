@@ -31,7 +31,7 @@ test.describe('Forgot Password page', () => {
 		await page.goto('/forgot-password');
 		await page.getByPlaceholder('name@email.com').fill('test@example.com');
 		await page.getByRole('button', { name: 'Send Reset Code' }).click();
-		await expect(page).toHaveURL(//reset-password?email=test%40example.com/);
+		await expect(page).toHaveURL(/\/reset-password\?email=test%40example\.com/);
 		await expect(page.getByRole('heading', { name: 'Reset Password' })).toBeVisible();
 		await expect(page.getByPlaceholder('123456')).toBeVisible();
 	});
