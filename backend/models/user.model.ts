@@ -28,6 +28,7 @@ export interface IUser extends Document {
 	otpCode?: string;
 	otpExpires?: Date;
 	isActive: boolean;
+	isDemo?: boolean;
 	availability?: IAvailabilitySlot[];
 	correctPassword(
 		candidatePassword: string,
@@ -136,6 +137,11 @@ const userSchema = new Schema<IUser, IUserModel>(
 		isActive: {
 			type: Boolean,
 			default: true,
+		},
+		// Shared public demo account: restricted by jwtProtect (no deletes, no user management)
+		isDemo: {
+			type: Boolean,
+			default: false,
 		},
 		availability: [
 			{

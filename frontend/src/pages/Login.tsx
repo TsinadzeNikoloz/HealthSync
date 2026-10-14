@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLogin } from '../features/authentication/useLogin';
+import { useDemoLogin } from '../features/authentication/useDemoLogin';
 import { OTPVerification } from '../features/authentication/OTPVerification';
 import AppLogo from '../ui/AppLogo';
 import AuthPane from '../features/authentication/AuthPane';
@@ -13,6 +14,7 @@ function Login() {
 	const [error, setError] = useState('');
 
 	const { login, isPending, pendingEmail, setPendingEmail } = useLogin();
+	const { enabled: demoEnabled, demoLogin, isPending: isDemoPending } = useDemoLogin();
 
 	const handleSubmit = (e: { preventDefault(): void }) => {
 		e.preventDefault();
@@ -134,6 +136,38 @@ function Login() {
 							<i className="fas fa-arrow-right text-xs opacity-50"></i>
 						</button>
 					</form>
+
+					{demoEnabled && (
+						<div className="mt-8">
+							<div className="mb-4 flex items-center gap-3">
+								<span className="h-px flex-1 bg-slate-100"></span>
+								<span className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+									Or try a demo account
+								</span>
+								<span className="h-px flex-1 bg-slate-100"></span>
+							</div>
+							<div className="grid grid-cols-3 gap-2">
+								{(
+									[
+										['USER', 'Patient', 'fa-user'],
+										['DOCTOR', 'Doctor', 'fa-user-md'],
+										['ADMIN', 'Admin', 'fa-user-shield'],
+									] as const
+								).map(([role, label, icon]) => (
+									<button
+										key={role}
+										type="button"
+										disabled={isDemoPending || isPending}
+										onClick={() => demoLogin(role)}
+										className="flex flex-col items-center gap-2 rounded-2xl border border-slate-100 bg-slate-50 py-4 text-xs font-bold text-slate-600 transition-all hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600 disabled:opacity-60"
+									>
+										<i className={`fas ${icon} text-base`}></i>
+										{label}
+									</button>
+								))}
+							</div>
+						</div>
+					)}
 
 					<p className="mb-4 mt-8 text-center text-[11px] font-medium leading-relaxed text-slate-400">
 						By accessing HealthSync you agree to our Privacy Policy and Terms of

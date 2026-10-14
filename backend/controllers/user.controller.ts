@@ -165,6 +165,11 @@ export const updateMe = catchAsync(
 			'availability',
 		) as Record<string, unknown>;
 		if (req.file) filteredBody.photo = req.file.filename;
+		// Shared demo accounts must keep their email and can't enable 2FA (nobody could pass it)
+		if (req.user!.isDemo) {
+			delete filteredBody.email;
+			delete filteredBody.twoFactorEnabled;
+		}
 		const updatedUser = await User.findByIdAndUpdate(
 			req.user!.id,
 			filteredBody,

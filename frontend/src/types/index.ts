@@ -48,6 +48,7 @@ export interface User {
 	dateOfBirth?: string;
 	address?: string;
 	isActive: boolean;
+	isDemo?: boolean;
 	twoFactorEnabled: boolean;
 	availability?: AvailabilitySlot[];
 	createdAt: string;

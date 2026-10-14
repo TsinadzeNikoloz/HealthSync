@@ -17,7 +17,20 @@ const loginLimiter = rateLimit({
 	legacyHeaders: false,
 });
 
+const demoLimiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	max: 30,
+	message: {
+		status: 'fail',
+		message: 'Too many demo logins. Please try again in 15 minutes.',
+	},
+	standardHeaders: true,
+	legacyHeaders: false,
+});
+
 router.post('/signup', authController.signup);
+router.get('/demoStatus', authController.demoStatus);
+router.post('/demoLogin', demoLimiter, authController.demoLogin);
 router.post('/login', loginLimiter, authController.login);
 router.get('/logout', authController.logout);
 router.post('/verifyOTP', authController.verifyOTP);

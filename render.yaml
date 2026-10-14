@@ -40,6 +40,9 @@ services:
         sync: false
       - key: BREVO_API_KEY
         sync: false
+      # "true" shows the Patient/Doctor/Admin demo login buttons
+      - key: DEMO_MODE
+        value: "true"
       - key: CLOUDINARY_CLOUD_NAME
         sync: false
       - key: CLOUDINARY_API_KEY

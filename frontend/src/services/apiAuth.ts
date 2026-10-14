@@ -25,6 +25,22 @@ export async function login({
 }
 
 // ---------------------------------------------------------------------------
+// DEMO ACCOUNTS
+// ---------------------------------------------------------------------------
+export type DemoRole = 'USER' | 'DOCTOR' | 'ADMIN';
+
+export async function getDemoStatus(): Promise<boolean> {
+	const { data } = await apiClient.get('/users/demoStatus');
+	return Boolean(data.data.enabled);
+}
+
+export async function demoLogin(role: DemoRole): Promise<{ user: User; token: string }> {
+	const { data } = await apiClient.post('/users/demoLogin', { role });
+	localStorage.setItem('jwt', data.token);
+	return { user: data.data.user, token: data.token };
+}
+
+// ---------------------------------------------------------------------------
 // VERIFY OTP (Two-Factor Authentication)
 // ---------------------------------------------------------------------------
 export async function verifyOTP({

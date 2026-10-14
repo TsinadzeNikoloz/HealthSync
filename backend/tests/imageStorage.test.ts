@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -18,8 +18,18 @@ const CLOUD_VARS = [
 	'CLOUDINARY_API_SECRET',
 ] as const;
 
-afterEach(() => {
+// config.env (loaded by tests/setup.ts) may contain real Cloudinary keys; start every test without them
+const original = Object.fromEntries(CLOUD_VARS.map((k) => [k, process.env[k]]));
+
+beforeEach(() => {
 	for (const k of CLOUD_VARS) delete process.env[k];
+});
+
+afterEach(() => {
+	for (const k of CLOUD_VARS) {
+		if (original[k] === undefined) delete process.env[k];
+		else process.env[k] = original[k];
+	}
 	upload_stream.mockReset();
 });
 

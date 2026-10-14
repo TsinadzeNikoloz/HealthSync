@@ -73,6 +73,100 @@ export const signup = catchAsync(async (req: Request, res: Response) => {
 	createAndSendToken(newUser, 201, res);
 });
 
+// ---------------------------------------------------------------------------
+// DEMO ACCOUNTS
+// ---------------------------------------------------------------------------
+const DEMO_ACCOUNTS = {
+	USER: { name: 'Demo Patient', email: 'demo.patient@example.com' },
+	DOCTOR: { name: 'Demo Doctor', email: 'demo.doctor@example.com' },
+	ADMIN: { name: 'Demo Admin', email: 'demo.admin@example.com' },
+} as const;
+
+type DemoRole = keyof typeof DEMO_ACCOUNTS;
+
+const isDemoRole = (role: unknown): role is DemoRole =>
+	typeof role === 'string' &&
+	Object.prototype.hasOwnProperty.call(DEMO_ACCOUNTS, role);
+
+// What a demo user can never do: delete anything, change credentials, or manage other users
+const isBlockedForDemo = (req: Request): boolean => {
+	if (req.method === 'DELETE') return true;
+	if (req.baseUrl.endsWith('/users')) {
+		if (req.path === '/updateMyPassword') return true;
+		// admin user management (create / edit other users); updateMe stays allowed
+		if (['POST', 'PATCH'].includes(req.method) && req.path !== '/updateMe') {
+			return true;
+		}
+	}
+	return false;
+};
+
+// @desc        Tell the login page whether to show the demo buttons
+// @route       GET /api/v1/users/demoStatus
+// @access      Public
+export const demoStatus = (_req: Request, res: Response) => {
+	res.status(200).json({
+		status: 'success',
+		data: { enabled: process.env.DEMO_MODE === 'true' },
+	});
+};
+
+// @desc        Log in as a shared demo account (created on first use)
+// @route       POST /api/v1/users/demoLogin
+// @access      Public (only when DEMO_MODE=true)
+export const demoLogin = catchAsync(
+	async (req: Request, res: Response, next: NextFunction) => {
+		if (process.env.DEMO_MODE !== 'true') {
+			return next(new AppError('Demo login is not enabled', 404));
+		}
+
+		const role: unknown = req.body.role;
+		if (!isDemoRole(role)) {
+			return next(new AppError('Please choose a valid demo role', 400));
+		}
+		const account = DEMO_ACCOUNTS[role];
+
+		let user = await User.findOne({ email: account.email });
+
+		if (!user) {
+			// Nobody ever knows this password: demo accounts are only reachable via demoLogin
+			const password = `${crypto.randomBytes(24).toString('hex')}Aa1!`;
+			try {
+				user = await User.create({
+					name: account.name,
+					email: account.email,
+					role,
+					isDemo: true,
+					password,
+					passwordConfirm: password,
+					...(role === 'DOCTOR'
+						? {
+								availability: [1, 2, 3, 4, 5].map((dayOfWeek) => ({
+									dayOfWeek,
+									startTime: '09:00',
+									endTime: '17:00',
+								})),
+							}
+						: {}),
+				});
+			} catch {
+				// two first-ever clicks racing on the unique email index
+				user = await User.findOne({ email: account.email });
+			}
+		}
+
+		// Never log a visitor into a real account that happens to use a demo email
+		if (!user || !user.isDemo || user.role !== role) {
+			return next(new AppError('Demo account is unavailable', 403));
+		}
+		if (!user.isActive) {
+			return next(new AppError('Demo account is unavailable', 403));
+		}
+
+		createAndSendToken(user, 200, res);
+	},
+);
+
 // @desc        Log in user and return jwt
 // @route       POST /api/v1/users/login
 // @access      Public
@@ -224,6 +318,13 @@ export const jwtProtect = catchAsync(
 					'User recently changed password! Please log in again.',
 					401,
 				),
+			);
+		}
+
+		// 5) Shared demo accounts may look around but not break things for other visitors
+		if (currentUser.isDemo && isBlockedForDemo(req)) {
+			return next(
+				new AppError('This action is disabled for demo accounts', 403),
 			);
 		}
 
